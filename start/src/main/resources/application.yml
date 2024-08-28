@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: start
+  config:
+    import:
+      - optional:application-web.yml
+      - optional:application-redis.yml
+      - optional:application-datasource.yml
+  profiles:
+    active: dev
