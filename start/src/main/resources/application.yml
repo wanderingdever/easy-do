@@ -8,6 +8,14 @@ spring:
     import:
       - optional:application-web.yml
       - optional:application-redis.yml
-      - optional:application-datasource.yml
+      - optional:application-database.yml
   profiles:
     active: dev
+
+sa-token:
+  # token前缀
+  token-prefix: Bearer
+  jwt-secret-key: ***REMOVE_SECRET***
+  token-name: Easy-Token
+  # 默认30天
+  timeout: 2592000

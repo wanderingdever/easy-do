@@ -1,6 +1,5 @@
 package com.easy.utils.lang;
 
-import net.sourceforge.pinyin4j.PinyinHelper;
 import org.dromara.hutool.core.text.StrUtil;
 
 import java.util.Collection;
@@ -542,24 +541,5 @@ public class StringUtils extends StrUtil {
         result[0] = input.substring(0, splitPos);
         result[1] = input.substring(splitPos);
         return result;
-    }
-
-    /**
-     * 转换中文为拼音首字母
-     *
-     * @param chinese 中文
-     * @return 首字母
-     */
-    public static String getFirstLetter(String chinese) {
-        StringBuilder sb = new StringBuilder();
-        for (char c : chinese.toCharArray()) {
-            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c);
-            if (pinyinArray != null && pinyinArray.length > 0) {
-                sb.append(pinyinArray[0].charAt(0));
-            } else if (!Character.toString(c).matches("\\p{InCJKUnifiedIdeographs}")) {
-                sb.append(c);
-            }
-        }
-        return sb.toString().toLowerCase();
     }
 }
