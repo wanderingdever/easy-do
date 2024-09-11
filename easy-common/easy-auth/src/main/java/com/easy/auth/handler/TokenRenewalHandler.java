@@ -1,12 +1,11 @@
 package com.easy.auth.handler;
 
 import cn.dev33.satoken.SaManager;
-import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.exception.BackResultException;
 import cn.dev33.satoken.exception.StopMatchException;
 import cn.dev33.satoken.fun.SaParamFunction;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.strategy.SaStrategy;
+import cn.dev33.satoken.strategy.SaAnnotationStrategy;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -34,9 +33,7 @@ public class TokenRenewalHandler implements HandlerInterceptor {
         try {
             if (this.isAnnotation && handler instanceof HandlerMethod) {
                 Method method = ((HandlerMethod) handler).getMethod();
-                if ((Boolean) SaStrategy.instance.isAnnotationPresent.apply(method, SaIgnore.class)) {
-                    return true;
-                }
+                SaAnnotationStrategy.instance.checkMethodAnnotation.accept(method);
                 // 获取当前token的过期时间
                 long tokenTimeout = StpUtil.getTokenTimeout();
                 if (tokenTimeout > 0) {

@@ -19,6 +19,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
         <!--redisson-->
         <dependency>
             <groupId>org.redisson</groupId>
@@ -27,7 +32,7 @@
 
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-web</artifactId>
+            <artifactId>easy-core</artifactId>
         </dependency>
     </dependencies>
 </project>

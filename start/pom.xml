@@ -18,7 +18,11 @@
     </properties>
 
     <dependencies>
-        <!-- redis模块包含了web模块-->
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-web</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.easy</groupId>
             <artifactId>easy-redis</artifactId>
@@ -26,7 +30,7 @@
 
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-datasource</artifactId>
+            <artifactId>easy-database</artifactId>
         </dependency>
 
     </dependencies>

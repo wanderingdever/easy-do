@@ -17,7 +17,7 @@
         <module>easy-core</module>
         <module>easy-web</module>
         <module>easy-auth</module>
-        <module>easy-datasource</module>
+        <module>easy-database</module>
     </modules>
 
     <properties>
