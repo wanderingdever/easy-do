@@ -17,24 +17,26 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-
-        <hutool.version>6.0.0-M15</hutool.version>
-        <jackson.version>2.15.2</jackson.version>
-        <bcprov-jdk15to18.version>1.74</bcprov-jdk15to18.version>
-        <lombok.version>1.18.32</lombok.version>
-        <guava.version>32.0.1-jre</guava.version>
-        <commons-pool2.version>2.11.1</commons-pool2.version>
-        <commons-io.version>2.11.0</commons-io.version>
+        <hutool.version>6.0.0-M16</hutool.version>
+        <jackson.version>2.17.2</jackson.version>
+        <bcprov-jdk15to18.version>1.78.1</bcprov-jdk15to18.version>
+        <lombok.version>1.18.34</lombok.version>
+        <guava.version>33.3.0-jre</guava.version>
+        <commons-pool2.version>2.12.0</commons-pool2.version>
+        <commons-io.version>2.16.1</commons-io.version>
         <servlet-api.version>4.0.1</servlet-api.version>
-        <easyexcel.version>3.3.2</easyexcel.version>
-        <okhttp3.version>4.11.0</okhttp3.version>
-        <httpclient5.version>5.2.1</httpclient5.version>
-        <fastjson2.version>2.0.34</fastjson2.version>
-        <lang3.version>3.13.0</lang3.version>
-        <springframework.version>6.0.10</springframework.version>
-        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
-        <thumbnailator.version>0.4.19</thumbnailator.version>
+        <easyexcel.version>4.0.2</easyexcel.version>
+        <okhttp3.version>5.0.0-alpha.14</okhttp3.version>
+        <httpclient5.version>5.3.1</httpclient5.version>
+        <fastjson2.version>2.0.52</fastjson2.version>
+        <lang3.version>3.17.0</lang3.version>
+        <springframework.version>6.1.12</springframework.version>
+        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
+        <thumbnailator.version>0.4.20</thumbnailator.version>
         <validation-api.version>3.1.0</validation-api.version>
+        <ulid-creator.version>5.2.3</ulid-creator.version>
+        <commons-collections4.version>4.5.0-M2</commons-collections4.version>
+        <poi.version>5.3.0</poi.version>
     </properties>
 
 
@@ -82,12 +84,18 @@
             <artifactId>hutool-http</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.dromara.hutool</groupId>
-            <artifactId>hutool-swing</artifactId>
+            <artifactId>hutool-extra</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.biezhi</groupId>
+            <artifactId>TinyPinyin</artifactId>
+            <version>2.0.3.RELEASE</version>
+        </dependency>
+
         <!-- jackson-core  核心包，定义了低级流（Streaming）API，提供基于"流模式"解析。Jackson内部实现正是通过高性能的流模式API的JsonGenerator和JsonParser来生成和解析json -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -136,12 +144,6 @@
 
         <dependency>
             <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>3.6.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
             <version>${commons-pool2.version}</version>
         </dependency>
@@ -149,14 +151,14 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
+            <version>${commons-collections4.version}</version>
         </dependency>
 
         <!-- easyexcel 依赖 4.1.2 -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>5.2.3</version>
+            <version>${poi.version}</version>
         </dependency>
 
         <!-- io -->
@@ -214,24 +216,16 @@
         </dependency>
 
         <dependency>
-            <groupId>com.belerweb</groupId>
-            <artifactId>pinyin4j</artifactId>
-            <version>2.5.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
             <version>${validation-api.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.f4b6a3/ulid-creator -->
         <dependency>
             <groupId>com.github.f4b6a3</groupId>
             <artifactId>ulid-creator</artifactId>
-            <version>5.2.3</version>
+            <version>${ulid-creator.version}</version>
         </dependency>
-
 
     </dependencies>
 </project>
