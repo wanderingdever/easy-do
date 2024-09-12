@@ -20,17 +20,22 @@
     <dependencies>
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-web</artifactId>
+            <artifactId>easy-common-web</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-redis</artifactId>
+            <artifactId>easy-common-redis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-database</artifactId>
+            <artifactId>easy-common-database</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-common-auth</artifactId>
         </dependency>
 
         <dependency>

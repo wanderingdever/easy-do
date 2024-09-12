@@ -19,3 +19,5 @@ sa-token:
   token-name: Easy-Token
   # 默认30天
   timeout: 2592000
+  # 关闭logo
+  is-print: false
