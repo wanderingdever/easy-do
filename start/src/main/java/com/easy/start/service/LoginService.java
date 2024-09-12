@@ -66,10 +66,7 @@ public class LoginService {
             throw new CustomizeException("验证码不正确");
         }
         UserVO user = userService.selectUserByUsername(login.getUsername());
-        if (user == null) {
-            throw new CustomizeException("账号不存在");
-        }
-        if (user.getClient() != AccountClient.ADMIN) {
+        if (user == null || user.getClient() != AccountClient.ADMIN) {
             throw new CustomizeException("账号不存在");
         }
         // 校验密码

@@ -21,6 +21,7 @@ public class UserInfoExpandVO extends UserInfoVO implements Serializable {
 
     @Schema(description = "机构id")
     private String orgId;
+
     @Schema(description = "登录IP")
     private String ip;
 

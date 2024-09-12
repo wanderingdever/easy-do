@@ -17,8 +17,8 @@ public enum Sex {
     /**
      * 性别
      */
-    WOMAN(0, "女"),
-    MAN(1, "男"),
+    FEMALE(0, "女"),
+    MALE(1, "男"),
     OTHER(3, "其他");
 
     @EnumValue

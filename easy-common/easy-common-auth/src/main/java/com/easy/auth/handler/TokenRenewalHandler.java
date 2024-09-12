@@ -8,6 +8,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.strategy.SaAnnotationStrategy;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -21,15 +22,14 @@ import java.lang.reflect.Method;
  */
 public class TokenRenewalHandler implements HandlerInterceptor {
     public boolean isAnnotation = true;
-    public SaParamFunction<Object> auth = (handler) -> {
-    };
+    public SaParamFunction<Object> auth;
 
     public TokenRenewalHandler(SaParamFunction<Object> auth) {
         this.auth = auth;
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
         try {
             if (this.isAnnotation && handler instanceof HandlerMethod) {
                 Method method = ((HandlerMethod) handler).getMethod();
