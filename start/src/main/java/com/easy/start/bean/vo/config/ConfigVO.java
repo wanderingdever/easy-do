@@ -1,4 +1,4 @@
-package com.easy.start.bean.vo;
+package com.easy.start.bean.vo.config;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.easy.core.bean.base.BaseVO;

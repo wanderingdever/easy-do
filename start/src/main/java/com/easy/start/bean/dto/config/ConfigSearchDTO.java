@@ -1,4 +1,4 @@
-package com.easy.start.bean.dto;
+package com.easy.start.bean.dto.config;
 
 import com.easy.datasource.bean.dto.PageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;

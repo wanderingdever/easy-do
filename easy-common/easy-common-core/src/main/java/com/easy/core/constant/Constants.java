@@ -59,4 +59,9 @@ public interface Constants {
      * 机器码
      */
     String MACHINE_CODE = "machine_code";
+
+    /**
+     * 菜单根节点id
+     */
+    String ROOT = "0";
 }

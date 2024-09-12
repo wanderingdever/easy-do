@@ -22,5 +22,5 @@ public class BaseVO extends BaseIdVO {
 
 
     @Schema(description = "逻辑删除")
-    private String del;
+    private Boolean del;
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.start.dao.UserMapper">
+    <select id="selectUserInfo" resultType="com.easy.start.bean.vo.user.UserInfoExpandVO">
+        select u.id          as id,
+               u.username    as username,
+               u.email       as email,
+               u.phone       as phone,
+               u.client      as client,
+               u.`status`    as status,
+               u.create_time as createTime,
+               ui.avatar     as avatar,
+               ui.nickname   as nickname,
+               ui.sex        as sex,
+               ui.name       as name,
+               ui.id_card    as idCard
+        from sys_user u
+                 left join sys_user_info ui on u.id = ui.user_id
+        where u.id = #{userId}
+          and u.del = 0
+    </select>
+
+    <update id="updateUser">
+        update sys_user
+        set email=#{dto.email},
+            phone=#{dto.phone},
+            `client`=#{dto.client},
+            `status`=#{dto.status}
+        where id = #{dto.id}
+    </update>
+</mapper>

@@ -23,4 +23,9 @@ public interface RedisConstants {
      */
     String SYSTEM_CONFIG = "system_config:";
 
+    /**
+     * 系统字典
+     */
+    String SYSTEM_DICT = "system_dict:";
+
 }

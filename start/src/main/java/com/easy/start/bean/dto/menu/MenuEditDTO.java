@@ -1,4 +1,4 @@
-package com.easy.start.bean.dto;
+package com.easy.start.bean.dto.menu;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -6,20 +6,21 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 参数配置入参
- * </p>>
+ * 菜单入参
+ * </p>
  *
  * @author Matt
  */
 @EqualsAndHashCode(callSuper = true)
+@Schema(description = "菜单入参-编辑")
 @Data
-@Schema(description = "参数配置入参-编辑")
-public class ConfigEditDTO extends ConfigAddDTO {
+public class MenuEditDTO extends MenuAddDTO {
     /**
      * 主键ID
      */
     @Schema(description = "主键ID")
     @NotBlank(message = "数据ID不能为空")
     private String id;
+
 
 }
