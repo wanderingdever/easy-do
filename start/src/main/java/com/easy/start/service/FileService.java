@@ -1,5 +1,6 @@
 package com.easy.start.service;
 
+import com.easy.start.bean.entity.FileRecord;
 import com.easy.start.bean.vo.file.FileVO;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -46,18 +47,18 @@ public interface FileService {
     /**
      * 下载
      *
-     * @param fileName 文件名
+     * @param file 文件信息
      * @return 字节流
      */
-    ResponseEntity<Resource> download(String fileName) throws IOException;
+    ResponseEntity<Resource> download(FileRecord file) throws IOException;
 
     /**
      * 下载文件
      *
-     * @param fileNameList 文件名字集合
+     * @param fileList 文件集合
      * @return 字节流
      */
-    ResponseEntity<Resource> download(List<String> fileNameList) throws IOException;
+    ResponseEntity<Resource> download(List<FileRecord> fileList) throws IOException;
 
     /**
      * 删除文件

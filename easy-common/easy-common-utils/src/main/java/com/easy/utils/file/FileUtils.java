@@ -8,9 +8,15 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 文件工具
@@ -289,4 +295,47 @@ public class FileUtils {
         return byteArrayOutputStream.toByteArray();
     }
 
+    /**
+     * 封装文件响应实体
+     *
+     * @param fileName 文件名
+     * @param baos     文件字节数组输出流
+     * @return
+     */
+    public static ResponseEntity<Resource> getResourceResponseEntity(String fileName, ByteArrayOutputStream baos) {
+        // 创建ByteArrayResource对象
+        Resource resource = new ByteArrayResource(baos.toByteArray()) {
+            @Override
+            public String getFilename() {
+                return fileName; // 提供文件名
+            }
+        };
+        // 设置HTTP响应头
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        // 创建ResponseEntity对象并返回
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(baos.toByteArray().length)
+                .body(resource);
+    }
+
+    /**
+     * 压缩文件
+     *
+     * @param zipOutputStream 压缩文件输出流
+     * @param fileName        文件名
+     * @param inputStream     文件输入流
+     */
+    public static void zipFile(ZipOutputStream zipOutputStream, String fileName, InputStream inputStream) throws IOException {
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOutputStream.putNextEntry(zipEntry);
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = inputStream.read(bytes)) >= 0) {
+            zipOutputStream.write(bytes, 0, length);
+        }
+        zipOutputStream.closeEntry();
+        inputStream.close();
+    }
 }

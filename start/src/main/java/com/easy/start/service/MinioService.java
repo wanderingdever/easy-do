@@ -2,6 +2,7 @@ package com.easy.start.service;
 
 import com.easy.core.constant.Constants;
 import com.easy.core.exception.CustomizeException;
+import com.easy.start.bean.entity.FileRecord;
 import com.easy.start.bean.vo.file.FileVO;
 import com.easy.start.config.MinIoClientConfig;
 import com.easy.utils.file.FileUtils;
@@ -85,13 +86,13 @@ public class MinioService implements FileService {
     }
 
     @Override
-    public ResponseEntity<Resource> download(String fileName) {
+    public ResponseEntity<Resource> download(FileRecord file) {
 
         return null;
     }
 
     @Override
-    public ResponseEntity<Resource> download(List<String> idList) {
+    public ResponseEntity<Resource> download(List<FileRecord> fileList) {
         return null;
     }
 

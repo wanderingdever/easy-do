@@ -64,8 +64,7 @@ public class FileRecordService extends ServiceImpl<FileRecordMapper, FileRecord>
     public ResponseEntity<Resource> download(List<String> idList) throws IOException {
         List<FileRecord> list = lambdaQuery().in(FileRecord::getId, idList).list();
         if (CollectionUtils.isNotEmpty(list)) {
-            List<String> filNameList = list.stream().map(FileRecord::getFile).toList();
-            return fileService.download(filNameList);
+            return fileService.download(list);
         }
         return null;
     }
@@ -80,8 +79,8 @@ public class FileRecordService extends ServiceImpl<FileRecordMapper, FileRecord>
     public void deleteFile(String fileName) {
     }
 
-    public FileVO upload(InputStream value, String path) throws IOException {
-        FileVO upload = fileService.upload(value, path);
+    public FileVO upload(InputStream value, String fileName) throws IOException {
+        FileVO upload = fileService.upload(value, fileName);
         return saveFile(upload);
     }
 

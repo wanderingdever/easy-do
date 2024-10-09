@@ -5,28 +5,24 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.easy.core.exception.CustomizeException;
+import com.easy.start.bean.entity.FileRecord;
 import com.easy.start.bean.vo.file.FileVO;
 import com.easy.start.config.AliOssConfig;
 import com.easy.utils.file.FileUtils;
 import com.easy.utils.lang.DateUtils;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -37,7 +33,6 @@ import java.util.zip.ZipOutputStream;
  */
 @Service
 @ConditionalOnProperty(name = "file.storage", havingValue = "ali")
-
 public class AliOssService implements FileService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AliOssService.class);
@@ -91,28 +86,26 @@ public class AliOssService implements FileService {
     }
 
     @Override
-    public ResponseEntity<Resource> download(String fileName) {
+    public ResponseEntity<Resource> download(FileRecord file) {
         // 创建OSSClient实例
         OSS ossClient = null;
         try {
             ossClient = new OSSClientBuilder().build(aliOssConfig.getEndpoint(), aliOssConfig.getAccessKey(), aliOssConfig.getSecretKey());
             // 直接下载到文件
-            OSSObject object = ossClient.getObject(new GetObjectRequest(aliOssConfig.getBucketName(), fileName));
+            String filePath = file.getFile();
+            String fileName = file.getFileName();
+            OSSObject object = ossClient.getObject(new GetObjectRequest(aliOssConfig.getBucketName(), filePath));
             InputStream objectContent = object.getObjectContent();
-            // 转为pdf
-            byte[] pfdBytes = FileUtils.convertPngToPdf(objectContent.readAllBytes(), fileName);
-            objectContent = new ByteArrayInputStream(pfdBytes);
-            String simpleFileName = fileName.substring(0, fileName.lastIndexOf('.')) + ".pdf";
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = objectContent.read(buffer)) != -1) {
                 baos.write(buffer, 0, bytesRead);
             }
-            return getResourceResponseEntity(simpleFileName, baos);
+            return FileUtils.getResourceResponseEntity(fileName, baos);
         } catch (Exception e) {
             LOGGER.error("文件下载失败：{}", e.getMessage());
-            throw new CustomizeException("文件上传失败");
+            throw new CustomizeException("文件下载失败");
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();
@@ -120,73 +113,34 @@ public class AliOssService implements FileService {
         }
     }
 
-    /**
-     * 封装文件响应实体
-     *
-     * @param fileName 文件名
-     * @param baos     文件字节数组输出流
-     * @return
-     */
-    @NotNull
-    private static ResponseEntity<Resource> getResourceResponseEntity(String fileName, ByteArrayOutputStream baos) {
-        // 创建ByteArrayResource对象
-        Resource resource = new ByteArrayResource(baos.toByteArray()) {
-            @Override
-            public String getFilename() {
-                return fileName; // 提供文件名
-            }
-        };
-        // 设置HTTP响应头
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-        // 创建ResponseEntity对象并返回
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(baos.toByteArray().length)
-                .body(resource);
-    }
-
     @Override
-    public ResponseEntity<Resource> download(List<String> fileNameList) {
+    public ResponseEntity<Resource> download(List<FileRecord> fileList) {
         // 创建OSSClient实例
         OSS ossClient = new OSSClientBuilder().build(aliOssConfig.getEndpoint(), aliOssConfig.getAccessKey(), aliOssConfig.getSecretKey());
         // 创建一个字节输出流来捕获压缩包的字节
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         String downloadFileName;
-        if (fileNameList.size() == 2) {
+        if (fileList.size() == 1) {
             // 如果只有一个文件,则不压缩成zip,直接下载
-            return download(fileNameList.get(0));
+            return download(fileList.get(0));
         } else {
             downloadFileName = DateUtils.datePath() + "/" + DateUtils.timeNum() + ".zip";
             try (ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-                for (String fileName : fileNameList) {
+                for (FileRecord file : fileList) {
                     // 下载文件
-                    OSSObject ossObject = ossClient.getObject(aliOssConfig.getBucketName(), fileName);
+                    OSSObject ossObject = ossClient.getObject(aliOssConfig.getBucketName(), file.getFile());
                     InputStream inputStream = ossObject.getObjectContent();
-                    // 转为pdf
-                    byte[] pfdBytes = FileUtils.convertPngToPdf(inputStream.readAllBytes(), fileName);
-                    String simpleFileName = fileName.substring(fileName.lastIndexOf('/') + 1, fileName.lastIndexOf('.')) + ".pdf";
-                    inputStream = new ByteArrayInputStream(pfdBytes);
                     // 将文件添加到压缩包
-                    ZipEntry zipEntry = new ZipEntry(simpleFileName);
-                    zipOutputStream.putNextEntry(zipEntry);
-                    byte[] bytes = new byte[1024];
-                    int length;
-                    while ((length = inputStream.read(bytes)) >= 0) {
-                        zipOutputStream.write(bytes, 0, length);
-                    }
-                    zipOutputStream.closeEntry();
-                    inputStream.close();
+                    FileUtils.zipFile(zipOutputStream, file.getFileName(), inputStream);
                 }
             } catch (Exception e) {
                 throw new CustomizeException("文件下载失败");
             } finally {
-                // 完成压缩包
                 // 关闭OSSClient
                 ossClient.shutdown();
             }
         }
-        return getResourceResponseEntity(downloadFileName, byteArrayOutputStream);
+        return FileUtils.getResourceResponseEntity(downloadFileName, byteArrayOutputStream);
     }
 
 
