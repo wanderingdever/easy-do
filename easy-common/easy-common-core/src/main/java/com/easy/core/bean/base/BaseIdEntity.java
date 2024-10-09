@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * ID实体
@@ -37,7 +36,7 @@ public class BaseIdEntity implements Serializable {
     @Schema(description = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonAlias("create_time")
-    private LocalDateTime createTime;
+    private String createTime;
 
     /**
      * 更新时间
@@ -46,6 +45,6 @@ public class BaseIdEntity implements Serializable {
     @Schema(description = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonAlias("update_time")
-    private LocalDateTime updateTime;
+    private String updateTime;
 
 }

@@ -1,4 +1,4 @@
-package com.easy.utils.enums;
+package com.easy.core.enums;
 
 /**
  * <p>枚举功能拓展接口</p>

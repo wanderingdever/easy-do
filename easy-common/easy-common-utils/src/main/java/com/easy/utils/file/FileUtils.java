@@ -3,6 +3,11 @@ package com.easy.utils.file;
 import com.easy.utils.lang.DateUtils;
 import com.easy.utils.lang.IdUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -95,6 +100,25 @@ public class FileUtils {
             fileName = IdUtils.fastSimpleUUID() + "." + fileName.substring(i + 1);
         }
         return fileName;
+    }
+
+    /**
+     * 获取 InputStream 的文件大小。
+     *
+     * @param inputStream 输入流
+     * @return 文件大小（字节）
+     * @throws IOException 如果读取流时发生错误
+     */
+    public static long getInputStreamSize(InputStream inputStream) throws IOException {
+        long size = 0;
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            size += bytesRead;
+        }
+
+        return size;
     }
 
     /**
@@ -228,4 +252,41 @@ public class FileUtils {
         os.close();
         ins.close();
     }
+
+    public static byte[] convertPngToPdf(byte[] pngBytes, String pngName) throws IOException {
+        // 创建PDF文档
+        PDDocument document = new PDDocument();
+        // 加载PNG图片
+        PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, pngBytes, pngName);
+
+        PDPage page = new PDPage(PDRectangle.A4);
+        document.addPage(page);
+        // 计算图片在页面上的居中位置
+        float imgWidth = pdImage.getWidth();
+        float imgHeight = pdImage.getHeight();
+        float pageWidth = page.getMediaBox().getWidth();
+        float pageHeight = page.getMediaBox().getHeight();
+
+        // 计算缩放比例
+        float scaleX = pageWidth / imgWidth;
+        float scaleY = pageHeight / imgHeight;
+        // 等比缩放
+        float scale = Math.min(scaleX, scaleY);
+
+        // 计算绘制起始位置（居中）
+        float x = (pageWidth - imgWidth * scale) / 2;
+        float y = (pageHeight - imgHeight * scale) / 2;
+        // 添加图片到PDF页面
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+        // 获取图片对象
+        contentStream.drawImage(pdImage, x, y, imgWidth * scale, imgHeight * scale);
+        contentStream.close();
+        // 将PDF文档写入到ByteArrayOutputStream
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        document.save(byteArrayOutputStream);
+        document.close();
+        // 返回PDF文档的字节数组
+        return byteArrayOutputStream.toByteArray();
+    }
+
 }

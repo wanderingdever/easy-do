@@ -2,7 +2,7 @@ package com.easy.core.exception;
 
 
 import com.easy.core.bean.base.R;
-import com.easy.core.enums.REnum;
+import com.easy.core.enums.EnumInterface;
 import lombok.Getter;
 
 /**
@@ -16,7 +16,8 @@ public class CustomizeException extends RuntimeException {
 
     private final R<String> result;
 
-    public CustomizeException(REnum rEnum) {
+
+    public <E extends Enum<E> & EnumInterface<V>, V> CustomizeException(E rEnum) {
         super(rEnum.getIntroduction());
         this.result = R.fail(rEnum);
     }

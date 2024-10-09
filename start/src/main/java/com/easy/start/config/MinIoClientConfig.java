@@ -26,24 +26,24 @@ public class MinIoClientConfig {
     /**
      * 用户名
      */
-    @Value("${file.minio.accessKey}")
+    @Value("${file.minio.access-key}")
     private String accessKey;
     /**
      * 密码
      */
-    @Value("${file.minio.secretKey}")
+    @Value("${file.minio.secret-key}")
     private String secretKey;
 
     /**
      * 存储桶名称
      */
-    @Value("${file.minio.bucketName}")
+    @Value("${file.minio.bucket-name}")
     private String bucketName;
 
     /**
      * 预览到期时间（分钟）
      */
-    @Value("${file.minio.previewExpiry}")
+    @Value("${file.minio.preview-expiry}")
     private Integer previewExpiry;
 
 

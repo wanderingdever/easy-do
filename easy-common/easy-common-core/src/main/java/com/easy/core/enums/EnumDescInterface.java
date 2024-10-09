@@ -1,4 +1,4 @@
-package com.easy.utils.enums;
+package com.easy.core.enums;
 
 /**
  * <p>枚举描述接口，暂时无用</p>

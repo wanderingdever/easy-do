@@ -1,7 +1,7 @@
 package com.easy.web.annotation;
 
-import com.easy.utils.enums.EnumInterface;
-import com.easy.utils.enums.EnumUtils;
+
+import com.easy.core.enums.EnumInterface;
 
 import java.lang.annotation.*;
 

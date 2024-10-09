@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum Gender {
+public enum Sex {
 
     /**
      * 性别

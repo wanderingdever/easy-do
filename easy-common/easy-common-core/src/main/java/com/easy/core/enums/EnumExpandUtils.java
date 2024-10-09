@@ -1,4 +1,4 @@
-package com.easy.utils.enums;
+package com.easy.core.enums;
 
 import org.apache.commons.lang3.tuple.Pair;
 

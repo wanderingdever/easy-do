@@ -1,7 +1,6 @@
 package com.easy.start.service;
 
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -9,7 +8,7 @@ import com.easy.core.enums.DelEnum;
 import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.bean.dto.IdDTO;
 import com.easy.datasource.bean.dto.IdListDTO;
-import com.easy.datasource.utils.PageUtil;
+import com.easy.datasource.utils.PageUtils;
 import com.easy.start.bean.dto.role.RoleDTO;
 import com.easy.start.bean.dto.role.RoleEditDTO;
 import com.easy.start.bean.dto.role.RoleSearchDTO;
@@ -19,13 +18,14 @@ import com.easy.start.bean.entity.UserRole;
 import com.easy.start.bean.vo.login.UserRoleAndPermissionVO;
 import com.easy.start.bean.vo.role.RoleVO;
 import com.easy.start.dao.RoleMapper;
+import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
 import lombok.AllArgsConstructor;
+import org.dromara.hutool.core.bean.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
     public UserRoleAndPermissionVO getUserRoleKeyList(String userId) {
         // 查询用户角色关联
         List<UserRole> userRoleList = userRoleService.lambdaQuery().eq(UserRole::getUserId, userId).list();
-        if (userRoleList.isEmpty()) {
+        if (CollectionUtils.isEmpty(userRoleList)) {
             LOGGER.error("未查询到用户角色关联");
             return null;
         }
@@ -75,8 +75,8 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
                 .eq(StringUtils.isNotNull(dto.getAuthorityLevel()), Role::getAuthorityLevel, dto.getAuthorityLevel())
                 .eq(StringUtils.isNotNull(dto.getEnable()), Role::getEnable, dto.getEnable())
                 .eq(StringUtils.isNotBlank(dto.getOrgId()), Role::getOrgId, dto.getOrgId())
-                .page(PageUtil.getPage(dto));
-        return PageUtil.getPage(page, RoleVO.class);
+                .page(PageUtils.getPage(dto));
+        return PageUtils.getPage(page, RoleVO.class);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -160,7 +160,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
     public List<String> roleMenuIds(IdDTO dto) {
         List<RoleMenu> list = roleMenuService.lambdaQuery().eq(RoleMenu::getRoleId, dto.getId()).list();
-        if (list == null || list.isEmpty()) {
+        if (CollectionUtils.isEmpty(list)) {
             return null;
         }
         return list.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());

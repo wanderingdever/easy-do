@@ -1,7 +1,6 @@
 package com.easy.core.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.easy.utils.enums.EnumInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

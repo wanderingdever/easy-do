@@ -8,6 +8,7 @@ import com.easy.start.bean.vo.user.UserInfoExpandVO;
 import com.easy.start.dao.provider.UserProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.List;
@@ -36,4 +37,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 更新用户数据
      */
     void updateUser(@Param("dto") UserEditDTO dto);
+
+    @Select("SELECT COUNT(*) FROM sys_user u LEFT JOIN sys_user_org uo ON u.id = uo.user_id WHERE uo.org_id = #{dto.orgId} AND u.del= 0  AND uo.del= 0")
+    long userInfoPageCount(@Param("dto") UserSearchDTO dto);
 }

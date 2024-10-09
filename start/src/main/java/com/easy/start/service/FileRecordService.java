@@ -10,13 +10,19 @@ import com.easy.start.bean.vo.file.FileVO;
 import com.easy.start.dao.FileRecordMapper;
 import com.easy.utils.file.FileUtils;
 import com.easy.utils.lang.StringUtils;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.collections4.CollectionUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,24 +35,10 @@ import java.util.stream.Collectors;
  */
 @EqualsAndHashCode(callSuper = true)
 @Service
-@Data
+@AllArgsConstructor
 public class FileRecordService extends ServiceImpl<FileRecordMapper, FileRecord> {
 
-    @Transactional
-    public FileVO saveRecord(String fileName, String relativePath, String endpoint, long size) {
-        FileRecord fileRecord = new FileRecord();
-        fileRecord.setFileName(fileName);
-        fileRecord.setFile(relativePath);
-        fileRecord.setFileType(FileUtils.getFileType(relativePath));
-        fileRecord.setFileSize(String.valueOf(size));
-        save(fileRecord);
-        FileVO fileVO = new FileVO();
-        BeanUtils.copyProperties(fileRecord, fileVO);
-        fileVO.setId(fileRecord.getId());
-        fileVO.setAbsolutePath(endpoint + Constants.FILE_SEPARATOR + relativePath);
-        fileVO.setHost(endpoint);
-        return fileVO;
-    }
+    private final FileService fileService;
 
     /**
      * 文件查询
@@ -67,5 +59,43 @@ public class FileRecordService extends ServiceImpl<FileRecordMapper, FileRecord>
             }).collect(Collectors.toList());
         }
         return result;
+    }
+
+    public ResponseEntity<Resource> download(List<String> idList) throws IOException {
+        List<FileRecord> list = lambdaQuery().in(FileRecord::getId, idList).list();
+        if (CollectionUtils.isNotEmpty(list)) {
+            List<String> filNameList = list.stream().map(FileRecord::getFile).toList();
+            return fileService.download(filNameList);
+        }
+        return null;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public FileVO upload(MultipartFile file) {
+        FileVO upload = fileService.upload(file);
+        return saveFile(upload);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteFile(String fileName) {
+    }
+
+    public FileVO upload(InputStream value, String path) throws IOException {
+        FileVO upload = fileService.upload(value, path);
+        return saveFile(upload);
+    }
+
+    @NotNull
+    private FileVO saveFile(FileVO upload) {
+        FileRecord fileRecord = new FileRecord();
+        fileRecord.setFileName(upload.getOriginalName());
+        fileRecord.setFile(upload.getRelativePath());
+        fileRecord.setFileType(FileUtils.getFileType(upload.getRelativePath()));
+        fileRecord.setFileSize(upload.getFileSize());
+        save(fileRecord);
+        FileVO fileVO = new FileVO();
+        fileVO.setId(fileRecord.getId());
+        fileVO.setAbsolutePath(upload.getHost() + Constants.FILE_SEPARATOR + upload.getRelativePath());
+        return fileVO;
     }
 }

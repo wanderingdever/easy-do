@@ -1,4 +1,4 @@
-package com.easy.utils.enums;
+package com.easy.core.enums;
 
 /**
  * 枚举示例

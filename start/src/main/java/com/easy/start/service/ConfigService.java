@@ -4,7 +4,7 @@ package com.easy.start.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.datasource.utils.PageUtil;
+import com.easy.datasource.utils.PageUtils;
 import com.easy.redis.constant.RedisConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.dto.config.ConfigAddDTO;
@@ -13,7 +13,9 @@ import com.easy.start.bean.dto.config.ConfigSearchDTO;
 import com.easy.start.bean.entity.Config;
 import com.easy.start.bean.vo.config.ConfigVO;
 import com.easy.start.dao.ConfigMapper;
+import com.easy.start.utils.SystemUtils;
 import com.easy.utils.json.JacksonUtils;
+import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
 import jakarta.annotation.PostConstruct;
 import jodd.util.StringUtil;
@@ -43,7 +45,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
         // 默认缓存系统级别
         dto.setIsSystem(true);
         List<Config> list = getList(dto);
-        if (StringUtils.isNotEmpty(list)) {
+        if (CollectionUtils.isNotEmpty(list)) {
             RedisUtils.setCacheObject(RedisConstants.SYSTEM_CONFIG, JacksonUtils.toJsonString(list));
         }
     }
@@ -66,7 +68,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
         return lambdaQuery().like(StringUtils.isNotBlank(dto.getConfigName()), Config::getConfigName, dto.getConfigName())
                 .like(StringUtils.isNotBlank(dto.getConfigKey()), Config::getConfigKey, dto.getConfigKey())
                 .eq(StringUtils.isNotNull(dto.getIsSystem()), Config::getIsSystem, dto.getIsSystem())
-                .page(PageUtil.getPage(dto));
+                .page(PageUtils.getPage(dto));
     }
 
     /**
@@ -110,7 +112,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
         ConfigVO result = new ConfigVO();
         // 获取缓存数据
         List<ConfigVO> configList = getCacheConfigList();
-        if (StringUtils.isNotEmpty(configList)) {
+        if (CollectionUtils.isNotEmpty(configList)) {
             // 筛选
             result = configList.stream().filter(config -> config.getConfigKey().equals(configKey)).findFirst().orElse(null);
         }
@@ -127,10 +129,6 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
     }
 
     public List<ConfigVO> getCacheConfigList() {
-        String cacheObject = RedisUtils.getCacheObject(RedisConstants.SYSTEM_CONFIG);
-        if (StringUtil.isNotBlank(cacheObject)) {
-            return JacksonUtils.jsonToList(cacheObject, ConfigVO.class);
-        }
-        return null;
+        return SystemUtils.getCacheConfigList();
     }
 }

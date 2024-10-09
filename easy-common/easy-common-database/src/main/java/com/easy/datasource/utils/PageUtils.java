@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @author Matt
  */
-public class PageUtil {
+public class PageUtils {
 
     public static <T> Page<T> getPage(IPage<?> pageInterface, List<T> list) {
 

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Matt
  */
-public final class OkHttpUtil {
+public final class OkHttpUtils {
     private static volatile OkHttpClient okHttpClient = null;
     private static volatile Semaphore semaphore = null;
     private Map<String, String> headerMap;
@@ -37,9 +37,9 @@ public final class OkHttpUtil {
     /**
      * 初始化okHttpClient，并且允许https访问
      */
-    private OkHttpUtil() {
+    private OkHttpUtils() {
         if (okHttpClient == null) {
-            synchronized (OkHttpUtil.class) {
+            synchronized (OkHttpUtils.class) {
                 if (okHttpClient == null) {
                     TrustManager[] trustManagers = buildTrustManagers();
                     okHttpClient = new OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
@@ -58,7 +58,7 @@ public final class OkHttpUtil {
      */
     private static Semaphore getSemaphoreInstance() {
         // 只能1个线程同时访问
-        synchronized (OkHttpUtil.class) {
+        synchronized (OkHttpUtils.class) {
             if (semaphore == null) {
                 semaphore = new Semaphore(0);
             }
@@ -71,8 +71,8 @@ public final class OkHttpUtil {
      *
      * @return
      */
-    public static OkHttpUtil builder() {
-        return new OkHttpUtil();
+    public static OkHttpUtils builder() {
+        return new OkHttpUtils();
     }
 
     /**
@@ -112,7 +112,7 @@ public final class OkHttpUtil {
      *
      * @param url 请求地址
      */
-    public OkHttpUtil url(String url) {
+    public OkHttpUtils url(String url) {
         this.url = url;
         return this;
     }
@@ -122,7 +122,7 @@ public final class OkHttpUtil {
      *
      * @param param 参数
      */
-    public OkHttpUtil addParam(Map<String, String> param) {
+    public OkHttpUtils addParam(Map<String, String> param) {
         if (paramMap == null) {
             paramMap = new LinkedHashMap<>(16);
         }
@@ -136,7 +136,7 @@ public final class OkHttpUtil {
      * @param key   参数名
      * @param value 参数值
      */
-    public OkHttpUtil addParam(String key, String value) {
+    public OkHttpUtils addParam(String key, String value) {
         if (paramMap == null) {
             paramMap = new LinkedHashMap<>(16);
         }
@@ -144,7 +144,7 @@ public final class OkHttpUtil {
         return this;
     }
 
-    public OkHttpUtil body(String body) {
+    public OkHttpUtils body(String body) {
         if (body != null) {
             this.body = body;
         }
@@ -157,17 +157,18 @@ public final class OkHttpUtil {
      * @param key   参数名
      * @param value 参数值
      */
-    public void addHeader(String key, String value) {
+    public OkHttpUtils addHeader(String key, String value) {
         if (headerMap == null) {
             headerMap = new LinkedHashMap<>(16);
         }
         headerMap.put(key, value);
+        return this;
     }
 
     /**
      * 初始化get方法
      */
-    public OkHttpUtil get() {
+    public OkHttpUtils get() {
         request = new Request.Builder().get();
         StringBuilder urlBuilder = new StringBuilder(url);
         if (paramMap != null) {
@@ -191,7 +192,7 @@ public final class OkHttpUtil {
      *
      * @param isJsonPost true等于json的方式提交数据，类似postman里post方法的raw false等于普通的表单提交
      */
-    public OkHttpUtil post(boolean isJsonPost) {
+    public OkHttpUtils post(boolean isJsonPost) {
         RequestBody requestBody;
         if (isJsonPost) {
             String json = "";
@@ -219,7 +220,6 @@ public final class OkHttpUtil {
         setHeader(request);
         try {
             Response response = okHttpClient.newCall(request.build()).execute();
-            assert response.body() != null;
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();

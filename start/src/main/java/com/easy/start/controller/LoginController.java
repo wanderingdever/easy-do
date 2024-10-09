@@ -53,7 +53,7 @@ public class LoginController {
     @SaIgnore
     public void verificationCode(HttpServletResponse response) {
         // 定义图形验证码的长、宽、验证码位数、干扰圈圈数量
-        CircleCaptcha circleCaptcha = CaptchaUtil.ofCircleCaptcha(120, 40, 4, 30);
+        CircleCaptcha circleCaptcha = CaptchaUtil.ofCircleCaptcha(120, 40, 4, 0);
         // 设置背景颜色
         circleCaptcha.setBackground(new Color(249, 251, 220));
         // 生成四位验证码

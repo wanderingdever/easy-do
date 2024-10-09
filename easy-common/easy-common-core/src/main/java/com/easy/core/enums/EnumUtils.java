@@ -1,4 +1,4 @@
-package com.easy.utils.enums;
+package com.easy.core.enums;
 
 
 import com.easy.utils.BeanUtils;

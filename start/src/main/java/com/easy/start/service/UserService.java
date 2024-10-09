@@ -27,6 +27,7 @@ import com.easy.start.dao.UserMapper;
 import com.easy.start.enums.AuthorityLevel;
 import com.easy.utils.http.IpLocation;
 import com.easy.utils.http.IpUtils;
+import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.DateUtils;
 import com.easy.utils.lang.IdUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +36,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -194,8 +194,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         Page<UserInfoExpandVO> page = new Page<>(dto.getCurrent(), dto.getSize());
         List<UserInfoExpandVO> userList = baseMapper.userInfoPage(dto);
         page.setRecords(userList);
+        page.setTotal(baseMapper.userInfoPageCount(dto));
         List<String> userIdList = userList.stream().map(UserInfoExpandVO::getId).toList();
-        if (CollectionUtils.isEmpty(userIdList)) {
+        if (CollectionUtils.isNotEmpty(userIdList)) {
             // TODO 岗位、角色、组织关联查询
             List<UserRole> userRoleList = userRoleService.lambdaQuery().in(UserRole::getUserId, userIdList).list();
             if (!userRoleList.isEmpty()) {

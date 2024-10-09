@@ -1,7 +1,7 @@
 package com.easy.web.config;
 
-import com.easy.utils.enums.EnumInterface;
-import com.easy.utils.enums.EnumUtils;
+import com.easy.core.enums.EnumInterface;
+import com.easy.core.enums.EnumUtils;
 import com.easy.web.annotation.SchemaEnum;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.oas.models.media.Schema;

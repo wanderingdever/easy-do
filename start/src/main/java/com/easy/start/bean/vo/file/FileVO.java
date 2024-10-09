@@ -36,10 +36,13 @@ public class FileVO implements Serializable {
     @Schema(description = "文件host")
     private String host;
 
-    public FileVO(String originalName, String relativePath, String absolutePath, String host) {
+    @Schema(description = "文件大小")
+    private String fileSize;
+
+    public FileVO(String originalName, String relativePath, String host, long size) {
         this.originalName = originalName;
         this.relativePath = relativePath;
-        this.absolutePath = absolutePath;
         this.host = host;
+        this.fileSize = String.valueOf(size);
     }
 }

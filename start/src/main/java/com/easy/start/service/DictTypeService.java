@@ -1,13 +1,12 @@
 package com.easy.start.service;
 
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.bean.dto.IdDTO;
-import com.easy.datasource.utils.PageUtil;
+import com.easy.datasource.utils.PageUtils;
 import com.easy.redis.constant.RedisConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.dto.dict.*;
@@ -16,12 +15,13 @@ import com.easy.start.bean.entity.DictType;
 import com.easy.start.bean.vo.dict.DictTypeVO;
 import com.easy.start.dao.DictTypeMapper;
 import com.easy.utils.json.JacksonUtils;
+import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
 import lombok.AllArgsConstructor;
+import org.dromara.hutool.core.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +48,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
         dto.setEnable(true);
         dto.setIsSystem(true);
         List<DictType> dictTypeList = getTypeAndDataList(dto);
-        if (StringUtils.isNotEmpty(dictTypeList)) {
+        if (CollectionUtils.isNotEmpty(dictTypeList)) {
             // 设置缓存
             RedisUtils.setCacheObject(RedisConstants.SYSTEM_DICT, JacksonUtils.toJsonString(dictTypeList));
         }
@@ -94,7 +94,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
                 .eq(StringUtils.isNotBlank(dto.getDictType()), DictType::getDictType, dto.getDictType())
                 .eq(StringUtils.isNotNull(dto.getIsSystem()), DictType::getIsSystem, dto.getIsSystem())
                 .eq(StringUtils.isNotNull(dto.getEnable()), DictType::getEnable, dto.getEnable())
-                .page(PageUtil.getPage(dto));
+                .page(PageUtils.getPage(dto));
     }
 
     /**
@@ -157,7 +157,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
                 .eq(StringUtils.isNotNull(search.getIsSystem()), DictType::getIsSystem, search.getIsSystem())
                 .eq(StringUtils.isNotNull(search.getEnable()), DictType::getEnable, search.getEnable())
                 .list();
-        if (StringUtils.isEmpty(dictTypeList)) {
+        if (CollectionUtils.isEmpty(dictTypeList)) {
             return null;
         }
         // 查询出所有关联的data
@@ -213,7 +213,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
                 .eq(DictData::getDictType, search.getDictType())
                 .like(StringUtils.isNotBlank(search.getDictLabel()), DictData::getDictLabel, search.getDictLabel())
                 .eq(StringUtils.isNotNull(search.getEnable()), DictData::getEnable, search.getEnable())
-                .page(PageUtil.getPage(search));
+                .page(PageUtils.getPage(search));
     }
 
     /**

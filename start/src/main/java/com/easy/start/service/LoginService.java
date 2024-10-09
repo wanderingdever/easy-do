@@ -11,8 +11,8 @@ import com.easy.start.bean.dto.user.UserDTO;
 import com.easy.start.bean.vo.login.PwdLogin;
 import com.easy.start.bean.vo.login.TokenInfo;
 import com.easy.start.bean.vo.user.UserVO;
-import com.easy.start.enums.AccountClient;
 import com.easy.utils.lang.StringUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,13 +22,10 @@ import org.springframework.stereotype.Service;
  * @author Matt
  */
 @Service
+@AllArgsConstructor
 public class LoginService {
 
     private final UserService userService;
-
-    public LoginService(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * 检查用户是否已存在
@@ -48,25 +45,12 @@ public class LoginService {
      * @return {@link  TokenInfo}
      */
     public TokenInfo pwdLogin(PwdLogin login) {
-        if (login.getClient() == AccountClient.ADMIN) {
-            return adminLogin(login);
-        }
-        return null;
-    }
-
-    /**
-     * 管理端登录
-     *
-     * @param login 登录信息
-     * @return TokenInfo
-     */
-    private TokenInfo adminLogin(PwdLogin login) {
         Object cacheObject = RedisUtils.getCacheObject(RedisConstants.CAPTCHA_CODE + login.getVerifyCodeUuid());
         if (StringUtils.isNull(cacheObject) || !login.getValidateCode().equalsIgnoreCase(cacheObject.toString())) {
             throw new CustomizeException("验证码不正确");
         }
         UserVO user = userService.selectUserByUsername(login.getUsername());
-        if (user == null || user.getClient() != AccountClient.ADMIN) {
+        if (user == null) {
             throw new CustomizeException("账号不存在");
         }
         // 校验密码
@@ -80,4 +64,5 @@ public class LoginService {
         SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();
         return new TokenInfo(saTokenInfo.getTokenValue(), saTokenInfo.getTokenTimeout(), saTokenInfo.getLoginDevice());
     }
+
 }

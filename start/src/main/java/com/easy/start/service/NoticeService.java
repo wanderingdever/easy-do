@@ -1,11 +1,10 @@
 package com.easy.start.service;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.datasource.bean.dto.IdDTO;
-import com.easy.datasource.utils.PageUtil;
+import com.easy.datasource.utils.PageUtils;
 import com.easy.start.bean.dto.notice.NoticeAddDTO;
 import com.easy.start.bean.dto.notice.NoticeEditDTO;
 import com.easy.start.bean.dto.notice.NoticeSearchDTO;
@@ -17,6 +16,7 @@ import com.easy.start.bean.vo.notice.UserNoticeVO;
 import com.easy.start.dao.NoticeMapper;
 import com.easy.start.enums.ArticleStatus;
 import com.easy.utils.lang.StringUtils;
+import org.dromara.hutool.core.bean.BeanUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +44,7 @@ public class NoticeService extends ServiceImpl<NoticeMapper, Notice> {
         return lambdaQuery().like(StringUtils.isNotBlank(dto.getTitle()), Notice::getTitle, dto.getTitle())
                 .eq(StringUtils.isNotBlank(dto.getType()), Notice::getType, dto.getType())
                 .eq(StringUtils.isNotNull(dto.getStatus()), Notice::getStatus, dto.getStatus())
-                .page(PageUtil.getPage(dto));
+                .page(PageUtils.getPage(dto));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -100,7 +100,7 @@ public class NoticeService extends ServiceImpl<NoticeMapper, Notice> {
 
     public Page<UserNoticeVO> userPageNotice(NoticeSearchDTO dto) {
         dto.setUserId(StpUtil.getLoginId().toString());
-        Page<UserNoticeVO> page = PageUtil.getPage(dto);
+        Page<UserNoticeVO> page = PageUtils.getPage(dto);
         page.setOptimizeCountSql(false);
         page.setRecords(getBaseMapper().userPageNotice(page, dto));
         return page;

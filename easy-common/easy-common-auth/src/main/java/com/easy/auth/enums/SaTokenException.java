@@ -1,7 +1,7 @@
 package com.easy.auth.enums;
 
 import cn.dev33.satoken.exception.NotLoginException;
-import com.easy.utils.enums.EnumInterface;
+import com.easy.core.enums.EnumInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -1,5 +1,6 @@
 package com.easy.core.bean.base;
 
+import com.easy.core.enums.EnumInterface;
 import com.easy.core.enums.REnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -69,19 +70,13 @@ public class R<T> {
         return r;
     }
 
-    public static <T> R<T> fail(REnum rEnum, Exception e) {
-
-        R<T> r = new R<>(rEnum);
-        if (null != e) {
-            r.setMsg(e.getMessage());
-        }
+    public static <E extends Enum<E> & EnumInterface<V>, V, T> R<T> fail(E rEnum) {
+        R<T> r = new R<>();
+        r.setCode(Integer.parseInt(rEnum.getCode().toString()));
+        r.setMsg(rEnum.getIntroduction());
         return r;
     }
 
-    public static <T> R<T> fail(REnum rEnum) {
-
-        return fail(rEnum, null);
-    }
 
     public static <T> R<T> fail(ObjectError objectError) {
 

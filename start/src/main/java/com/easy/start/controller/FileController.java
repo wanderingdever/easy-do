@@ -1,14 +1,19 @@
 package com.easy.start.controller;
 
 
+import com.easy.core.exception.CustomizeException;
+import com.easy.datasource.bean.dto.IdListDTO;
 import com.easy.start.bean.dto.file.FileDTO;
 import com.easy.start.bean.dto.file.FileQueryDTO;
 import com.easy.start.bean.vo.file.FileRecordVO;
 import com.easy.start.bean.vo.file.FileVO;
 import com.easy.start.service.FileRecordService;
-import com.easy.start.service.FileService;
+import com.easy.utils.lang.CollectionUtils;
+import com.easy.web.annotation.Wrap;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,11 +31,9 @@ import java.util.List;
 @Tag(name = "文件服务")
 public class FileController {
 
-    private final FileService fileService;
     private final FileRecordService fileRecordService;
 
-    public FileController(FileService fileService, FileRecordService fileRecordService) {
-        this.fileService = fileService;
+    public FileController(FileRecordService fileRecordService) {
         this.fileRecordService = fileRecordService;
     }
 
@@ -55,7 +58,20 @@ public class FileController {
     @PostMapping(value = "/upload")
     @Operation(summary = "上传文件")
     public FileVO upload(@RequestPart(name = "file") MultipartFile file) {
-        return fileService.upload(file);
+        return fileRecordService.upload(file);
+    }
+
+    /**
+     * 文件下载
+     */
+    @PostMapping(value = "/download")
+    @Operation(summary = "文件下载")
+    @Wrap(disabled = true)
+    public ResponseEntity<Resource> download(@RequestBody IdListDTO dto) throws IOException {
+        if (CollectionUtils.isEmpty(dto.getIdList())) {
+            throw new CustomizeException("请选择文件");
+        }
+        return fileRecordService.download(dto.getIdList());
     }
 
     /**
@@ -75,19 +91,8 @@ public class FileController {
     @PostMapping(value = "/delete")
     @Operation(summary = "删除文件")
     public String delete(@RequestBody FileDTO dto) {
-        fileService.deleteFile(dto.getFileName());
+        fileRecordService.deleteFile(dto.getFileName());
         return "";
     }
 
-    /**
-     * 获取预览文件地址
-     *
-     * @param dto 文件名字
-     * @return 文件预览路径
-     */
-    @PostMapping(value = "/preview")
-    @Operation(summary = "获取预览文件地址")
-    public byte[] preview(@RequestBody FileDTO dto) throws IOException {
-        return fileService.download(dto.getFileName());
-    }
 }

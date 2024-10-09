@@ -1,7 +1,6 @@
 package com.easy.core.enums;
 
 import com.easy.core.constant.HttpCodes;
-import com.easy.utils.enums.EnumInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

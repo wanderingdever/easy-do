@@ -14,6 +14,8 @@ import io.minio.messages.DeleteObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,12 +37,11 @@ public class MinioService implements FileService {
 
     private final MinioClient minioClient;
     private final MinIoClientConfig minIoClientConfig;
-    private final FileRecordService fileRecordService;
 
-    public MinioService(MinioClient minioClient, MinIoClientConfig minIoClientConfig, FileRecordService fileRecordService) {
+    public MinioService(MinioClient minioClient, MinIoClientConfig minIoClientConfig) {
         this.minioClient = minioClient;
         this.minIoClientConfig = minIoClientConfig;
-        this.fileRecordService = fileRecordService;
+
     }
 
 
@@ -50,16 +51,50 @@ public class MinioService implements FileService {
         String fileName = file.getOriginalFilename();
         // 上传文件
         String relativePath = minioUp(file);
-        String absolutePath = minIoClientConfig.getEndpoint() + Constants.FILE_SEPARATOR + relativePath;
         // 保存记录
-        return fileRecordService.saveRecord(fileName, relativePath, minIoClientConfig.getEndpoint(), file.getSize());
+        return new FileVO(fileName, relativePath, minIoClientConfig.getEndpoint(), file.getSize());
     }
 
     @Override
-    public byte[] download(String fileName) {
+    public FileVO upload(InputStream inputStream, String fileName) throws IOException {
+        String bucketName = minIoClientConfig.getBucketName();
+        String extension = FileUtils.getExtension(fileName);
+        try {
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .stream(inputStream, inputStream.available(), -1)
+                    .contentType(FileUtils.getContentType(extension))
+                    .build()
+            );
+            String relativePath = bucketName + Constants.FILE_SEPARATOR + fileName;
+            // 保存记录
+            return new FileVO(fileName, relativePath, minIoClientConfig.getEndpoint(), FileUtils.getInputStreamSize(inputStream));
+        } catch (Exception e) {
+            LOGGER.error("Minio错误: 上传文件 {} 失败：{}", fileName, e.getMessage());
+            throw new CustomizeException("Minio上传文件失败");
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    LOGGER.error("Minio错误: 关闭链接失败 {} ", e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Resource> download(String fileName) {
 
         return null;
     }
+
+    @Override
+    public ResponseEntity<Resource> download(List<String> idList) {
+        return null;
+    }
+
 
     @Override
     public String deleteFile(String fileName) {

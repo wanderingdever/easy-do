@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.bean.dto.IdDTO;
-import com.easy.datasource.utils.PageUtil;
+import com.easy.datasource.utils.PageUtils;
 import com.easy.start.bean.dto.org.OrgDTO;
 import com.easy.start.bean.dto.org.OrgEditDTO;
 import com.easy.start.bean.dto.org.OrgPageDTO;
@@ -68,8 +68,8 @@ public class OrgService extends ServiceImpl<OrgMapper, Org> {
         Page<Org> page = lambdaQuery()
                 .eq(StringUtils.isNotBlank(dto.getOrgParentId()), Org::getOrgParentId, dto.getOrgParentId())
                 .like(StringUtils.isNotBlank(dto.getOrgName()), Org::getOrgName, dto.getOrgName())
-                .page(PageUtil.getPage(dto));
-        return PageUtil.getPage(page, OrgVO.class);
+                .page(PageUtils.getPage(dto));
+        return PageUtils.getPage(page, OrgVO.class);
     }
 
     @Transactional(rollbackFor = Exception.class, timeout = 5)
