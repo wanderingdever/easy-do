@@ -12,10 +12,7 @@ import com.easy.datasource.bean.dto.IdDTO;
 import com.easy.start.bean.dto.user.UserDTO;
 import com.easy.start.bean.dto.user.UserEditDTO;
 import com.easy.start.bean.dto.user.UserSearchDTO;
-import com.easy.start.bean.entity.Org;
-import com.easy.start.bean.entity.Role;
-import com.easy.start.bean.entity.User;
-import com.easy.start.bean.entity.UserRole;
+import com.easy.start.bean.entity.*;
 import com.easy.start.bean.vo.login.LoginLogsVO;
 import com.easy.start.bean.vo.login.UserRoleAndPermissionVO;
 import com.easy.start.bean.vo.role.RoleVO;
@@ -25,6 +22,7 @@ import com.easy.start.dao.OrgMapper;
 import com.easy.start.dao.RoleMapper;
 import com.easy.start.dao.UserMapper;
 import com.easy.start.enums.AuthorityLevel;
+import com.easy.utils.file.Base64FileUtil;
 import com.easy.utils.http.IpLocation;
 import com.easy.utils.http.IpUtils;
 import com.easy.utils.lang.CollectionUtils;
@@ -32,11 +30,14 @@ import com.easy.utils.lang.DateUtils;
 import com.easy.utils.lang.IdUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.dromara.hutool.core.codec.binary.Base64;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     private final UserRoleService userRoleService;
     private final RoleService roleService;
+    private final UserInfoService userInfoService;
 
     private LoginLogsService loginLogsService;
 
@@ -218,5 +220,20 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public void del(IdDTO dto) {
         // 删除账号
         this.baseMapper.deleteById(dto.getId());
+    }
+
+    /**
+     * 更新头像
+     *
+     * @param avatar 用户头像
+     * @throws IOException 异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateAvatar(MultipartFile avatar) throws IOException {
+        // 转换为Base64字符串
+        String base64Encoded = Base64.encode(avatar.getBytes());
+        UserInfo one = userInfoService.lambdaQuery().eq(UserInfo::getId, StpUtil.getLoginId()).one();
+        one.setAvatar(Base64FileUtil.fixBase64Image(base64Encoded));
+        userInfoService.updateById(one);
     }
 }

@@ -1,10 +1,12 @@
 package com.easy.start.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.bean.dto.IdListDTO;
 import com.easy.start.bean.dto.file.FileDTO;
 import com.easy.start.bean.dto.file.FileQueryDTO;
+import com.easy.start.bean.entity.FileRecord;
 import com.easy.start.bean.vo.file.FileRecordVO;
 import com.easy.start.bean.vo.file.FileVO;
 import com.easy.start.service.FileRecordService;
@@ -47,6 +49,15 @@ public class FileController {
     @Operation(summary = "获取文件HOST")
     public String getHost() {
         return null;
+    }
+
+    /**
+     * 获取文件分页
+     */
+    @PostMapping(value = "/page")
+    @Operation(summary = "获取文件分页")
+    public Page<FileRecord> page(@RequestBody FileQueryDTO dto) {
+        return fileRecordService.filePage(dto);
     }
 
     /**

@@ -1,9 +1,10 @@
 package com.easy.start.bean.dto.file;
 
+import com.easy.datasource.bean.dto.PageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,11 +13,10 @@ import java.util.List;
  *
  * @author hk
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "文件信息")
-public class FileQueryDTO implements Serializable {
-
-    private static final long serialVersionUID = 5571987933556796125L;
+public class FileQueryDTO extends PageDTO {
 
     @Schema(description = "主键ids")
     private List<String> ids;

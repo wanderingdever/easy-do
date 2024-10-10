@@ -338,4 +338,23 @@ public class FileUtils {
         zipOutputStream.closeEntry();
         inputStream.close();
     }
+
+    /**
+     * 将 流 转换为byte
+     *
+     * @param inStream 文件流
+     * @return byte[]
+     */
+    public static byte[] input2byte(InputStream inStream) {
+        try (ByteArrayOutputStream swapStream = new ByteArrayOutputStream()) {
+            byte[] buff = new byte[inStream.available()];
+            while (inStream.read(buff) != -1) {
+                swapStream.write(buff);
+            }
+            return swapStream.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

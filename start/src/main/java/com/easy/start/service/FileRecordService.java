@@ -1,8 +1,10 @@
 package com.easy.start.service;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.constant.Constants;
+import com.easy.datasource.utils.PageUtils;
 import com.easy.start.bean.dto.file.FileQueryDTO;
 import com.easy.start.bean.entity.FileRecord;
 import com.easy.start.bean.vo.file.FileRecordVO;
@@ -96,5 +98,15 @@ public class FileRecordService extends ServiceImpl<FileRecordMapper, FileRecord>
         fileVO.setId(fileRecord.getId());
         fileVO.setAbsolutePath(upload.getHost() + Constants.FILE_SEPARATOR + upload.getRelativePath());
         return fileVO;
+    }
+
+    public Page<FileRecord> filePage(FileQueryDTO dto) {
+        Page<FileRecord> fileRecordPage = lambdaQuery()
+                .like(StringUtils.isNotBlank(dto.getFileName()), FileRecord::getFileName, dto.getFileName())
+                .like(StringUtils.isNotBlank(dto.getFilePath()), FileRecord::getFile, dto.getFilePath())
+                .like(StringUtils.isNotBlank(dto.getFileType()), FileRecord::getFileType, dto.getFileType())
+                .in(CollectionUtils.isNotEmpty(dto.getIds()), FileRecord::getId, dto.getIds())
+                .page(PageUtils.getPage(dto));
+        return fileRecordPage;
     }
 }

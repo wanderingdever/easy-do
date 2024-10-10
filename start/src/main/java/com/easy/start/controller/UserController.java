@@ -16,10 +16,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 /**
@@ -97,6 +97,15 @@ public class UserController {
     @SaCheckPermission(value = "system.user.del", orRole = Constants.ADMIN_ROLE)
     public void del(@RequestBody IdDTO dto) {
         userManager.del(dto);
+    }
+
+    /**
+     * 更新用户头像
+     */
+    @PostMapping("/update_avatar")
+    @Operation(summary = "更新用户头像")
+    public void updateAvatar(@RequestPart(name = "avatar") MultipartFile avatar) throws IOException {
+        userService.updateAvatar(avatar);
     }
 
 }
