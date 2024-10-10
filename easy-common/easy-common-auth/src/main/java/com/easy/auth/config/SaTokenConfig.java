@@ -6,6 +6,7 @@ import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
 import com.easy.auth.handler.TokenRenewalHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -26,6 +27,9 @@ public class SaTokenConfig implements WebMvcConfigurer {
 
     private final ApiWhiteListProperties whiteList;
 
+    @Value("${sa-token.automatic-renewal:false}")
+    private boolean automaticRenewal;
+
     public SaTokenConfig(ApiWhiteListProperties whiteList) {
         this.whiteList = whiteList;
     }
@@ -40,14 +44,17 @@ public class SaTokenConfig implements WebMvcConfigurer {
                 .excludePathPatterns(whiteList.getUrlAllArray())
                 // 手动放行
                 .excludePathPatterns("/**/*.js", "/lang/*.json", "/**/*.css", "/**/*.js", "/**/*.map", "/**/*.html", "/**/*.png",
-                        "/**/*.ico", "/**/*.jpg", "/favicon.ico", "/doc.html", "/webjars/**", "/swagger**/**", "/v2/**", "/v3/**","/error");
-        // token续期功能
-        registry.addInterceptor(new TokenRenewalHandler(handle -> StpUtil.checkLogin()))
-                .addPathPatterns("/**")
-                .excludePathPatterns(whiteList.getUrlAllArray())
-                // 手动放行
-                .excludePathPatterns("/**/*.js", "/lang/*.json", "/**/*.css", "/**/*.js", "/**/*.map", "/**/*.html", "/**/*.png",
-                        "/**/*.ico", "/**/*.jpg", "/favicon.ico", "/doc.html", "/webjars/**", "/swagger**/**", "/v2/**", "/v3/**","/error");
+                        "/**/*.ico", "/**/*.jpg", "/favicon.ico", "/doc.html", "/webjars/**", "/swagger**/**", "/v2/**", "/v3/**", "/error");
+        // 开启自动续期
+        if (automaticRenewal) {
+            // token续期功能
+            registry.addInterceptor(new TokenRenewalHandler(handle -> StpUtil.checkLogin()))
+                    .addPathPatterns("/**")
+                    .excludePathPatterns(whiteList.getUrlAllArray())
+                    // 手动放行
+                    .excludePathPatterns("/**/*.js", "/lang/*.json", "/**/*.css", "/**/*.js", "/**/*.map", "/**/*.html", "/**/*.png",
+                            "/**/*.ico", "/**/*.jpg", "/favicon.ico", "/doc.html", "/webjars/**", "/swagger**/**", "/v2/**", "/v3/**", "/error");
+        }
 
     }
 

@@ -21,7 +21,11 @@ sa-token:
   token-prefix: Bearer
   jwt-secret-key: ***REMOVE_SECRET***
   token-name: Easy-Token
-  # 默认30天
-  timeout: 2592000
+  # 登录超时
+  timeout: 7200
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: false
+  is-share: false
   # 关闭logo
   is-print: false
+  automatic-renewal: true
