@@ -2,6 +2,10 @@ server:
   port: 8081
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB #单个最大文件大小
+      max-request-size: 10MB #总上传的最大数据大小
   application:
     name: start
   config:
