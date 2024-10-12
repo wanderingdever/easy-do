@@ -17,6 +17,7 @@ import com.easy.start.dao.DictTypeMapper;
 import com.easy.utils.json.JacksonUtils;
 import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.dromara.hutool.core.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +44,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
     /**
      * 初始化系统启用字典到缓存
      */
+    @PostConstruct
     public void loadingDictCache() {
         DictSearchDTO dto = new DictSearchDTO();
         dto.setEnable(true);
