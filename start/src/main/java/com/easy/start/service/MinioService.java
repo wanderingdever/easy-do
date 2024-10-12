@@ -59,13 +59,12 @@ public class MinioService implements FileService {
     @Override
     public FileVO upload(InputStream inputStream, String fileName) throws IOException {
         String bucketName = minIoClientConfig.getBucketName();
-        String extension = FileUtils.getExtension(fileName);
         try {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucketName)
                     .object(fileName)
                     .stream(inputStream, inputStream.available(), -1)
-                    .contentType(FileUtils.getContentType(extension))
+                    .contentType(FileUtils.getContentType(fileName))
                     .build()
             );
             String relativePath = bucketName + Constants.FILE_SEPARATOR + fileName;

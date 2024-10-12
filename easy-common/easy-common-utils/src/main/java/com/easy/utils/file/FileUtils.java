@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -147,10 +149,11 @@ public class FileUtils {
     /**
      * Description: 判断Cos服务文件上传时文件的contentType
      *
-     * @param filenameExtension 文件后缀
+     * @param filename 文件名字
      * @return String
      */
-    public static String getContentType(String filenameExtension) {
+    public static String getContentType(String filename) {
+        String filenameExtension = getExtension(filename);
         String bmp = "bmp";
         if (bmp.equalsIgnoreCase(filenameExtension)) {
             return "image/bmp";
@@ -298,21 +301,23 @@ public class FileUtils {
     /**
      * 封装文件响应实体
      *
-     * @param fileName 文件名
-     * @param baos     文件字节数组输出流
+     * @param filename 文件名
+     * @param baos             文件字节数组输出流
      * @return
      */
-    public static ResponseEntity<Resource> getResourceResponseEntity(String fileName, ByteArrayOutputStream baos) {
+    public static ResponseEntity<Resource> getResourceResponseEntity(String filename, ByteArrayOutputStream baos) {
+        // 解决下载文件时文件名乱码问题
+        String downloadFileName = URLEncoder.encode(filename, StandardCharsets.UTF_8);
         // 创建ByteArrayResource对象
         Resource resource = new ByteArrayResource(baos.toByteArray()) {
             @Override
             public String getFilename() {
-                return fileName; // 提供文件名
+                return downloadFileName; // 提供文件名
             }
         };
         // 设置HTTP响应头
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + downloadFileName);
         // 创建ResponseEntity对象并返回
         return ResponseEntity.ok()
                 .headers(headers)
