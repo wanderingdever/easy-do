@@ -58,7 +58,8 @@ public class LoginService {
             throw new CustomizeException("密码错误");
         }
         // 登录
-        SaLoginModel loginModel = new SaLoginModel().build().setDevice(login.getDevice());
+        SaLoginModel loginModel = new SaLoginModel().build()
+                .setExtra("machine_code", login.getMachineCode());
         StpUtil.login(user.getId(), loginModel);
         // 获取登录信息
         SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();

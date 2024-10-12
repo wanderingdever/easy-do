@@ -34,7 +34,11 @@ public class PwdLogin {
     @Schema(title = "验证码随机数")
     private String verifyCodeUuid;
 
-    @Schema(title = "设备信息")
-    @NotBlank(message = "设备信息不能为空")
+    @Schema(title = "机器码")
+    @NotBlank(message = "机器码不能为空")
+    private String machineCode;
+
+    @Schema(title = "设备类型")
+    @NotBlank(message = "设备类型不能为空")
     private String device;
 }
