@@ -26,13 +26,6 @@ public class DictData extends BaseEntity {
     private String dictTypeId;
 
     /**
-     * 字典类型
-     */
-    @TableField(value = "dict_type")
-    @Schema(description = "字典类型")
-    private String dictType;
-
-    /**
      * 字典标签
      */
     @TableField(value = "dict_label")

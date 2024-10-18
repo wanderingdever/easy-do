@@ -24,13 +24,6 @@ public class DictDataAddDTO {
     private String dictTypeId;
 
     /**
-     * 字典类型
-     */
-    @NotBlank(message = "字典类型不能为空")
-    @Schema(description = "字典类型")
-    private String dictType;
-
-    /**
      * 字典排序
      */
     @NotNull(message = "字典排序不能为空")

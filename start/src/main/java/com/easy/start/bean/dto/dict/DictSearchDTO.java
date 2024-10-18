@@ -25,6 +25,8 @@ public class DictSearchDTO extends PageDTO {
     @Schema(description = "字典类型")
     private String dictType;
 
+    @Schema(description = "字典类型ID")
+    private String dictTypeId;
     /**
      * 是否是系统内置
      */

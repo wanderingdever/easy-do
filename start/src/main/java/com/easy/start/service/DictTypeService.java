@@ -134,8 +134,8 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
         DictType dictType = this.getById(id.getId());
         // 查询出所有关联的data
         LambdaQueryWrapper<DictData> dictDataRmQueryWrapper = new LambdaQueryWrapper<>();
-        dictDataRmQueryWrapper.eq(DictData::getDictType, dictType.getDictType());
-        if (dictDataService.lambdaQuery().eq(DictData::getDictType, dictType.getDictType()).count() > 0) {
+        dictDataRmQueryWrapper.eq(DictData::getDictTypeId, dictType.getId());
+        if (dictDataService.lambdaQuery().eq(DictData::getDictTypeId, dictType.getId()).count() > 0) {
             throw new CustomizeException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
         } else {
             // 删除字典类型
@@ -199,7 +199,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
             return null;
         }
         // 获取字典数据
-        List<DictData> dataList = dictDataService.lambdaQuery().eq(DictData::getDictType, dictType.getDictType()).list();
+        List<DictData> dataList = dictDataService.lambdaQuery().eq(DictData::getDictTypeId, dictType.getId()).list();
         dictType.setDictDataList(dataList);
         return dictType;
     }
@@ -212,7 +212,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
      */
     public Page<DictData> pageDictData(DictSearchDTO search) {
         return dictDataService.lambdaQuery()
-                .eq(DictData::getDictType, search.getDictType())
+                .eq(DictData::getDictTypeId, search.getDictTypeId())
                 .like(StringUtils.isNotBlank(search.getDictLabel()), DictData::getDictLabel, search.getDictLabel())
                 .eq(StringUtils.isNotNull(search.getEnable()), DictData::getEnable, search.getEnable())
                 .page(PageUtils.getPage(search));
