@@ -41,7 +41,7 @@ public class BaseIdEntity implements Serializable {
     /**
      * 更新时间
      */
-    @TableField(value = "update_time", fill = FieldFill.UPDATE)
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     @Schema(description = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonAlias("update_time")

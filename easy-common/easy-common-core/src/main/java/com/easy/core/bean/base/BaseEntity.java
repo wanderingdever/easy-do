@@ -30,7 +30,7 @@ public class BaseEntity extends BaseIdEntity {
     /**
      * 更新人
      */
-    @TableField(value = "update_by", fill = FieldFill.UPDATE)
+    @TableField(value = "update_by", fill = FieldFill.INSERT_UPDATE)
     @Schema(description = "更新人")
     private String updateBy;
 
