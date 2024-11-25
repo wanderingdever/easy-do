@@ -63,12 +63,25 @@ public class FileRecordService extends ServiceImpl<FileRecordMapper, FileRecord>
         return result;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<Resource> download(List<String> idList) throws IOException {
         List<FileRecord> list = lambdaQuery().in(FileRecord::getId, idList).list();
         if (CollectionUtils.isNotEmpty(list)) {
+            updateDownloadCount(idList);
             return fileService.download(list);
         }
         return null;
+    }
+
+
+    /**
+     * 更新下载次数
+     *
+     * @param ids id 集合
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateDownloadCount(List<String> ids) {
+        lambdaUpdate().in(FileRecord::getId, ids).setSql("downloads = downloads + 1").update();
     }
 
     @Transactional(rollbackFor = Exception.class)

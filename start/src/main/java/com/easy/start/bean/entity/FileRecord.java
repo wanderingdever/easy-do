@@ -35,4 +35,9 @@ public class FileRecord extends BaseEntity {
     @TableField(value = "file_size")
     private String fileSize;
 
+    @Schema(description = "下载次数")
+    @TableField(value = "downloads")
+    private Integer downloads;
+
+
 }
