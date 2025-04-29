@@ -1,16 +1,7 @@
 server:
   port: 8081
-  servlet:
-    encoding:
-      charset: utf-8
-      force: true
-      enabled: true
 
 spring:
-  servlet:
-    multipart:
-      max-file-size: 10MB #单个最大文件大小
-      max-request-size: 10MB #总上传的最大数据大小
   application:
     name: start
   config:
@@ -20,6 +11,10 @@ spring:
       - optional:application-database.yml
   profiles:
     active: dev
+
+logging:
+  level:
+    root: info
 
 sa-token:
   # token前缀
