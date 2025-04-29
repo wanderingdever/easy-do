@@ -32,7 +32,7 @@ public class DataScopeService {
 
     public List<String> authorizedOrgIdList() {
 
-        List<String> orgIdList = TempCacheUtil.getShortTimeCache(() -> serService.authorizedOrgIdList());
+        List<String> orgIdList = TempCacheUtil.getShortTimeCache(serService::authorizedOrgIdList);
         if (CollectionUtils.isEmpty(orgIdList)) {
             return List.of("-1");
         }
