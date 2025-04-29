@@ -1,12 +1,12 @@
 package com.easy.datasource.config;
 
+import cn.hutool.core.net.NetUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.***REMOVE_SECRET***;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.dromara.hutool.core.net.NetUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -59,7 +59,7 @@ public class MybatisPlusConfig {
      */
     @Bean
     public IdentifierGenerator idGenerator() {
-        return new DefaultIdentifierGenerator(NetUtil.getLocalhostV4());
+        return new DefaultIdentifierGenerator(NetUtil.getLocalhost());
     }
 
 }

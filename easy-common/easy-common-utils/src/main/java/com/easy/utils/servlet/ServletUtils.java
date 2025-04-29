@@ -1,10 +1,10 @@
 package com.easy.utils.servlet;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.extra.servlet.ServletUtil;
 import com.easy.utils.lang.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.convert.ConvertUtil;
-import org.dromara.hutool.http.server.servlet.ServletUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestAttributes;
@@ -42,35 +42,35 @@ public class ServletUtils extends ServletUtil {
      * 获取String参数
      */
     public static String getParameter(String name, String defaultValue) {
-        return ConvertUtil.toStr(getRequest().getParameter(name), defaultValue);
+        return Convert.toStr(getRequest().getParameter(name), defaultValue);
     }
 
     /**
      * 获取Integer参数
      */
     public static Integer getParameterToInt(String name) {
-        return ConvertUtil.toInt(getRequest().getParameter(name));
+        return Convert.toInt(getRequest().getParameter(name));
     }
 
     /**
      * 获取Integer参数
      */
     public static Integer getParameterToInt(String name, Integer defaultValue) {
-        return ConvertUtil.toInt(getRequest().getParameter(name), defaultValue);
+        return Convert.toInt(getRequest().getParameter(name), defaultValue);
     }
 
     /**
      * 获取Boolean参数
      */
     public static Boolean getParameterToBool(String name) {
-        return ConvertUtil.toBoolean(getRequest().getParameter(name));
+        return Convert.toBool(getRequest().getParameter(name));
     }
 
     /**
      * 获取Boolean参数
      */
     public static Boolean getParameterToBool(String name, Boolean defaultValue) {
-        return ConvertUtil.toBoolean(getRequest().getParameter(name), defaultValue);
+        return Convert.toBool(getRequest().getParameter(name), defaultValue);
     }
 
     /**

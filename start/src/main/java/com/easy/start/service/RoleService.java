@@ -1,6 +1,7 @@
 package com.easy.start.service;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,7 +22,6 @@ import com.easy.start.dao.RoleMapper;
 import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.bean.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package com.easy.utils.lang;
 
-import org.dromara.hutool.core.collection.CollUtil;
+
+import cn.hutool.core.collection.CollUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

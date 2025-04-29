@@ -1,9 +1,9 @@
 package com.easy.datasource.utils;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.easy.datasource.bean.dto.PageDTO;
-import org.dromara.hutool.core.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;

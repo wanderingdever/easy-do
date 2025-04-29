@@ -17,7 +17,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <hutool.version>6.0.0-M16</hutool.version>
+        <hutool.version>5.8.37</hutool.version>
         <jackson.version>2.17.2</jackson.version>
         <bcprov-jdk15to18.version>1.78.1</bcprov-jdk15to18.version>
         <lombok.version>1.18.34</lombok.version>
@@ -70,25 +70,31 @@
 
         <!--hutool-->
         <dependency>
-            <groupId>org.dromara.hutool</groupId>
+            <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.dromara.hutool</groupId>
+            <groupId>cn.hutool</groupId>
             <artifactId>hutool-crypto</artifactId>
             <version>${hutool.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.dromara.hutool</groupId>
+            <groupId>cn.hutool</groupId>
             <artifactId>hutool-http</artifactId>
             <version>${hutool.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.dromara.hutool</groupId>
+            <groupId>cn.hutool</groupId>
             <artifactId>hutool-extra</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-captcha</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.github.biezhi</groupId>

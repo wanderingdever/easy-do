@@ -2,6 +2,10 @@ package com.easy.start.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.CircleCaptcha;
+import cn.hutool.core.img.ImgUtil;
+import cn.hutool.core.io.IoUtil;
 import com.easy.core.exception.CustomizeException;
 import com.easy.redis.constant.RedisConstants;
 import com.easy.redis.utils.RedisUtils;
@@ -16,10 +20,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.core.io.IoUtil;
-import org.dromara.hutool.swing.captcha.CaptchaUtil;
-import org.dromara.hutool.swing.captcha.CircleCaptcha;
-import org.dromara.hutool.swing.img.ImgUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
 
-import static org.dromara.hutool.swing.img.ImgUtil.castToBufferedImage;
 
 /**
  * 登录
@@ -53,7 +52,7 @@ public class LoginController {
     @SaIgnore
     public void verificationCode(HttpServletResponse response) {
         // 定义图形验证码的长、宽、验证码位数、干扰圈圈数量
-        CircleCaptcha circleCaptcha = CaptchaUtil.ofCircleCaptcha(120, 40, 4, 0);
+        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(120, 40, 4, 0);
         // 设置背景颜色
         circleCaptcha.setBackground(new Color(249, 251, 220));
         // 生成四位验证码
@@ -99,7 +98,7 @@ public class LoginController {
         String uuidStr = UUID.randomUUID().toString().replace("-", "");
         response.setHeader("verify-code-uuid", uuidStr);
         try {
-            BufferedImage bufferedImage = castToBufferedImage(image, ImgUtil.IMAGE_TYPE_JPEG);
+            BufferedImage bufferedImage = ImgUtil.castToBufferedImage(image, ImgUtil.IMAGE_TYPE_JPEG);
             // 创建一个ByteArrayOutputStream，用于存储图片数据
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             // 写入图片数据到ByteArrayOutputStream

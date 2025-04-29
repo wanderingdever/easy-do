@@ -1,7 +1,7 @@
 package com.easy.utils.lang;
 
+import cn.hutool.core.util.IdUtil;
 import com.github.f4b6a3.ulid.UlidCreator;
-import org.dromara.hutool.core.data.id.IdUtil;
 
 import java.security.SecureRandom;
 import java.util.Random;

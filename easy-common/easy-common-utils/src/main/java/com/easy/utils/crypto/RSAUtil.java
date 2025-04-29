@@ -1,6 +1,6 @@
 package com.easy.utils.crypto;
 
-import org.dromara.hutool.core.codec.binary.Base64;
+import cn.hutool.core.codec.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

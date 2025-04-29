@@ -1,6 +1,7 @@
 package com.easy.start.service;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,7 +20,6 @@ import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
 import jakarta.annotation.PostConstruct;
 import jodd.util.StringUtil;
-import org.dromara.hutool.core.bean.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

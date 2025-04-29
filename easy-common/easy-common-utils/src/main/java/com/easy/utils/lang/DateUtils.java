@@ -1,10 +1,10 @@
 package com.easy.utils.lang;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.dromara.hutool.core.date.DatePattern;
-import org.dromara.hutool.core.date.DateTime;
-import org.dromara.hutool.core.date.DateUtil;
-import org.dromara.hutool.core.date.TimeUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.dromara.hutool.core.date.DatePattern.PURE_TIME_FORMATTER;
+import static cn.hutool.core.date.DatePattern.PURE_TIME_FORMATTER;
 
 
 /**
@@ -241,7 +241,7 @@ public class DateUtils extends DateUtil {
      * @return LocalDate
      */
     public static LocalDate parseLocalDate(CharSequence dateStr) {
-        return TimeUtil.parseDate(dateStr, DatePattern.NORM_DATE_FORMATTER);
+        return LocalDateTimeUtil.parseDate(dateStr, DatePattern.NORM_DATE_FORMATTER);
     }
 
     /**
@@ -251,7 +251,7 @@ public class DateUtils extends DateUtil {
      * @return 标准日期格式 FastDateFormat：yyyy-MM-dd
      */
     public static String formatDate(LocalDate localDate, String formatter) {
-        return TimeUtil.format(localDate, formatter);
+        return LocalDateTimeUtil.format(localDate, formatter);
     }
 
     /**

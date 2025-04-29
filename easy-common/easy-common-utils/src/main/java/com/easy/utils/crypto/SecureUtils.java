@@ -1,14 +1,13 @@
 package com.easy.utils.crypto;
 
-import org.dromara.hutool.core.codec.binary.Base64;
-import org.dromara.hutool.core.util.CharsetUtil;
-import org.dromara.hutool.crypto.SecureUtil;
-import org.dromara.hutool.crypto.bc.SmUtil;
-import org.dromara.hutool.crypto.symmetric.SymmetricCrypto;
+import cn.hutool.core.codec.Base64;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.SmUtil;
+import cn.hutool.crypto.symmetric.SymmetricCrypto;
 
-import static org.dromara.hutool.crypto.KeyUtil.generateKey;
+import java.nio.charset.StandardCharsets;
 
-/**
+/*
  * 加密解密工具
  * </p>
  *
@@ -43,6 +42,6 @@ public class SecureUtils extends SecureUtil {
      * @return 明文
      */
     public static String sm4PhoneDecrypt(String data) {
-        return PHONE_SM4.decryptStr(data, CharsetUtil.UTF_8);
+        return PHONE_SM4.decryptStr(data, StandardCharsets.UTF_8);
     }
 }

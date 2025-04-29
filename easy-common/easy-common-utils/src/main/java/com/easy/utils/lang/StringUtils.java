@@ -1,6 +1,7 @@
 package com.easy.utils.lang;
 
-import org.dromara.hutool.core.text.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 import java.util.Collection;
 import java.util.List;

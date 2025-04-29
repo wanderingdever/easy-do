@@ -1,5 +1,6 @@
 package com.easy.redis.aspect;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.easy.core.constant.Constants;
 import com.easy.core.enums.REnum;
 import com.easy.core.exception.CustomizeException;
@@ -14,7 +15,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.dromara.hutool.crypto.digest.DigestUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
