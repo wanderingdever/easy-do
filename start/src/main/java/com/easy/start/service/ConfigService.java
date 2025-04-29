@@ -15,12 +15,10 @@ import com.easy.start.bean.entity.Config;
 import com.easy.start.bean.vo.config.ConfigVO;
 import com.easy.start.dao.ConfigMapper;
 import com.easy.start.utils.SystemUtils;
-import com.easy.utils.json.JacksonUtils;
 import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
 import jakarta.annotation.PostConstruct;
 import jodd.util.StringUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +44,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
         dto.setIsSystem(true);
         List<Config> list = getList(dto);
         if (CollectionUtils.isNotEmpty(list)) {
-            RedisUtils.setCacheObject(RedisConstants.SYSTEM_CONFIG, JacksonUtils.toJsonString(list));
+            RedisUtils.setCacheNewList(RedisConstants.SYSTEM_CONFIG, list);
         }
     }
 
@@ -92,8 +90,7 @@ public class ConfigService extends ServiceImpl<ConfigMapper, Config> {
 
     @Transactional(rollbackFor = Exception.class)
     public void updateConfig(ConfigEditDTO config) {
-        Config newConfig = new Config();
-        BeanUtils.copyProperties(config, newConfig);
+        Config newConfig = BeanUtil.copyProperties(config, Config.class);
         this.updateById(newConfig);
     }
 

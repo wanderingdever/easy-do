@@ -3,6 +3,7 @@ package com.easy.start.service;
 
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.codec.Base64;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -31,7 +32,6 @@ import com.easy.utils.lang.DateUtils;
 import com.easy.utils.lang.IdUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,8 +82,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Transactional(rollbackFor = Exception.class, timeout = 5)
     public User add(UserDTO dto) {
 
-        User user = new User();
-        BeanUtils.copyProperties(dto, user);
+        User user = BeanUtil.copyProperties(dto, User.class);
         // FIXME 随机密码
         String password = IdUtils.generateCode(8);
         user.setPassword(BCrypt.hashpw(password));

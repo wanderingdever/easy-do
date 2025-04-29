@@ -1,6 +1,7 @@
 package com.easy.start.service;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.constant.Constants;
@@ -16,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,11 +54,7 @@ public class FileRecordService extends ServiceImpl<FileRecordMapper, FileRecord>
                 .in(CollectionUtils.isNotEmpty(dto.getIds()), FileRecord::getId, dto.getIds())
                 .list();
         if (CollectionUtils.isNotEmpty(fileRecordList)) {
-            result = fileRecordList.stream().map(record -> {
-                FileRecordVO fileRecordVO = new FileRecordVO();
-                BeanUtils.copyProperties(record, fileRecordVO);
-                return fileRecordVO;
-            }).collect(Collectors.toList());
+            result = fileRecordList.stream().map(record -> BeanUtil.copyProperties(record, FileRecordVO.class)).collect(Collectors.toList());
         }
         return result;
     }

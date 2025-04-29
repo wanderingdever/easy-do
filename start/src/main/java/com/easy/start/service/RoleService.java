@@ -81,8 +81,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> {
 
     @Transactional(rollbackFor = Exception.class)
     public void addRole(RoleDTO dto) {
-        Role role = new Role();
-        BeanUtil.copyProperties(dto, role);
+        Role role = BeanUtil.copyProperties(dto, Role.class);
         // 保存角色信息
         this.save(role);
         // 保存角色菜单关联信息

@@ -15,12 +15,10 @@ import com.easy.start.bean.entity.DictData;
 import com.easy.start.bean.entity.DictType;
 import com.easy.start.bean.vo.dict.DictTypeVO;
 import com.easy.start.dao.DictTypeMapper;
-import com.easy.utils.json.JacksonUtils;
 import com.easy.utils.lang.CollectionUtils;
 import com.easy.utils.lang.StringUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +50,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
         List<DictType> dictTypeList = getTypeAndDataList(dto);
         if (CollectionUtils.isNotEmpty(dictTypeList)) {
             // 设置缓存
-            RedisUtils.setCacheObject(RedisConstants.SYSTEM_DICT, JacksonUtils.toJsonString(dictTypeList));
+            RedisUtils.setCacheNewList(RedisConstants.SYSTEM_DICT, dictTypeList);
         }
     }
 
@@ -77,9 +75,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
         Optional<DictType> first = dictDataCacheList.parallelStream().filter(dict -> dict.getDictType().equals(dictType)).findFirst();
         DictType dict = first.orElse(null);
         if (dict != null) {
-            DictTypeVO dictVO = new DictTypeVO();
-            BeanUtil.copyProperties(dict, dictVO);
-            return dictVO;
+            return BeanUtil.copyProperties(dict, DictTypeVO.class);
         }
         return null;
     }
@@ -106,8 +102,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void addDictType(DictTypeAddDTO dto) {
-        DictType dictType = new DictType();
-        BeanUtils.copyProperties(dto, dictType);
+        DictType dictType = BeanUtil.copyProperties(dto, DictType.class);
         this.save(dictType);
     }
 
@@ -118,8 +113,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateDictType(DictTypeEditDTO dto) {
-        DictType dictType = new DictType();
-        BeanUtils.copyProperties(dto, dictType);
+        DictType dictType = BeanUtil.copyProperties(dto, DictType.class);
         this.updateById(dictType);
     }
 
@@ -180,9 +174,9 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
      * @return {@link List<DictType>}
      */
     public List<DictType> getCacheDictList() {
-        String cacheObject = RedisUtils.getCacheObject(RedisConstants.SYSTEM_DICT);
-        if (StringUtils.isNotBlank(cacheObject)) {
-            return JacksonUtils.jsonToList(cacheObject, DictType.class);
+        List<DictType> cacheList = RedisUtils.getCacheList(RedisConstants.SYSTEM_DICT);
+        if (StringUtils.isNotEmpty(cacheList)) {
+            return cacheList;
         }
         return null;
     }
@@ -225,8 +219,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void addDictData(DictDataAddDTO dto) {
-        DictData dictType = new DictData();
-        BeanUtils.copyProperties(dto, dictType);
+        DictData dictType = BeanUtil.copyProperties(dto, DictData.class);
         dictDataService.save(dictType);
     }
 
@@ -237,8 +230,7 @@ public class DictTypeService extends ServiceImpl<DictTypeMapper, DictType> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateDictData(DictDataEditDTO dto) {
-        DictData dictType = new DictData();
-        BeanUtils.copyProperties(dto, dictType);
+        DictData dictType = BeanUtil.copyProperties(dto, DictData.class);
         dictDataService.updateById(dictType);
     }
 

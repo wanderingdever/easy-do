@@ -21,7 +21,6 @@ import com.easy.utils.lang.StringUtils;
 import com.easy.utils.tree.TreeUtils;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,15 +73,13 @@ public class OrgService extends ServiceImpl<OrgMapper, Org> {
 
     @Transactional(rollbackFor = Exception.class, timeout = 5)
     public void add(OrgDTO dto) {
-        Org org = new Org();
-        BeanUtils.copyProperties(dto, org);
+        Org org = BeanUtil.copyProperties(dto, Org.class);
         save(org);
     }
 
     @Transactional(rollbackFor = Exception.class, timeout = 5)
     public void update(OrgEditDTO dto) {
-        Org org = new Org();
-        BeanUtils.copyProperties(dto, org);
+        Org org = BeanUtil.copyProperties(dto, Org.class);
         updateById(org);
     }
 
@@ -131,9 +128,7 @@ public class OrgService extends ServiceImpl<OrgMapper, Org> {
     }
 
     private OrgVO toOrgVO(Org org) {
-        OrgVO vo = new OrgVO();
-        BeanUtil.copyProperties(org, vo);
-        return vo;
+        return BeanUtil.copyProperties(org, OrgVO.class);
     }
 
     public List<OrgUserTreeVO> orgUserTree() {

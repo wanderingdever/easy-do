@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.easy.datasource.bean.dto.PageDTO;
-import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 import java.util.function.Function;
@@ -21,7 +20,7 @@ public class PageUtils {
     public static <T> Page<T> getPage(IPage<?> pageInterface, List<T> list) {
 
         Page<T> page = new Page<>();
-        BeanUtils.copyProperties(pageInterface, page);
+        BeanUtil.copyProperties(pageInterface, page);
         page.setRecords(list);
         return page;
     }

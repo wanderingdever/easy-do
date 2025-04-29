@@ -19,8 +19,7 @@ public class LoginLogsService extends ServiceImpl<LoginLogsMapper, LoginLogs> {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveLoginLogs(LoginLogsVO loginLogsVO) {
-        LoginLogs loginLogs = new LoginLogs();
-        BeanUtil.copyProperties(loginLogsVO, loginLogs);
+        LoginLogs loginLogs = BeanUtil.copyProperties(loginLogsVO, LoginLogs.class);
         loginLogs.setCreateBy(loginLogsVO.getUserId());
         save(loginLogs);
     }

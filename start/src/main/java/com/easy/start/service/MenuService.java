@@ -1,6 +1,7 @@
 package com.easy.start.service;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.constant.Constants;
 import com.easy.core.exception.CustomizeException;
@@ -17,7 +18,6 @@ import com.easy.start.dao.MenuMapper;
 import com.easy.start.enums.MenuType;
 import com.easy.utils.lang.StringUtils;
 import com.easy.utils.tree.TreeUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,8 +62,7 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateMenu(MenuEditDTO dto) {
-        Menu menu = new Menu();
-        BeanUtils.copyProperties(dto, menu);
+        Menu menu = BeanUtil.copyProperties(dto, Menu.class);
         this.updateById(menu);
     }
 
@@ -74,8 +73,7 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void addMenu(MenuAddDTO dto) {
-        Menu menu = new Menu();
-        BeanUtils.copyProperties(dto, menu);
+        Menu menu = BeanUtil.copyProperties(dto, Menu.class);
         this.save(menu);
     }
 
