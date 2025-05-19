@@ -5,9 +5,7 @@ import com.easy.redis.constant.RedisConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.entity.DictData;
 import com.easy.start.bean.entity.DictType;
-import com.easy.utils.json.JacksonUtils;
 import com.easy.utils.lang.CollectionUtils;
-import jodd.util.StringUtil;
 
 import java.util.List;
 
@@ -55,9 +53,9 @@ public class DictUtils {
      * @return List<DictType>
      */
     public static List<DictType> getCacheDictList() {
-        String cacheObject = RedisUtils.getCacheObject(RedisConstants.SYSTEM_DICT);
-        if (StringUtil.isNotBlank(cacheObject)) {
-            return JacksonUtils.jsonToList(cacheObject, DictType.class);
+        List<DictType> cacheObject = RedisUtils.getCacheList(RedisConstants.SYSTEM_DICT);
+        if (CollectionUtils.isNotEmpty(cacheObject)) {
+            return cacheObject;
         }
         return null;
     }

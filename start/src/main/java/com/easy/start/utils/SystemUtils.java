@@ -1,13 +1,13 @@
 package com.easy.start.utils;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.easy.core.exception.CustomizeException;
 import com.easy.redis.constant.RedisConstants;
 import com.easy.redis.utils.RedisUtils;
+import com.easy.start.bean.entity.Config;
 import com.easy.start.bean.vo.config.ConfigVO;
-import com.easy.utils.json.JacksonUtils;
 import com.easy.utils.lang.CollectionUtils;
-import jodd.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -46,10 +46,7 @@ public class SystemUtils {
     }
 
     public static List<ConfigVO> getCacheConfigList() {
-        String cacheObject = RedisUtils.getCacheObject(RedisConstants.SYSTEM_CONFIG);
-        if (StringUtil.isNotBlank(cacheObject)) {
-            return JacksonUtils.jsonToList(cacheObject, ConfigVO.class);
-        }
-        return null;
+        List<Config> cacheObject = RedisUtils.getCacheList(RedisConstants.SYSTEM_CONFIG);
+        return BeanUtil.copyToList(cacheObject, ConfigVO.class);
     }
 }
