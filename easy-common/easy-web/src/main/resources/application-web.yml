@@ -1,0 +1,39 @@
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+spring:
+  main:
+    banner-mode: off
+    log-startup-info: false
+  servlet:
+    multipart:
+      max-file-size: 50MB #单个最大文件大小
+      max-request-size: 50MB #总上传的最大数据大小
+logging:
+  level:
+    root: error
+  charset:
+    console: UTF-8
+  file:
+    path: ../logs
+    name: ${spring.application.name}
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.easy
+
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: false

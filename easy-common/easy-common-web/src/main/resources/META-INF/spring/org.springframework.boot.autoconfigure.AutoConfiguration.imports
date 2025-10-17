@@ -1,5 +1,0 @@
-com.easy.web.advice.ResponseBodyWrapAdvice
-com.easy.web.exception.GlobalExceptionHandler
-com.easy.web.config.UndertowConfig
-com.easy.web.config.Knife4jCustomizer
-com.easy.web.config.WebConfig
