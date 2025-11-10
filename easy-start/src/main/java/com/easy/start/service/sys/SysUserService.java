@@ -1,5 +1,6 @@
 package com.easy.start.service.sys;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.crypto.digest.BCrypt;
@@ -9,6 +10,7 @@ import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.utils.PageUtils;
 import com.easy.start.bean.dto.sys.user.UserDTO;
 import com.easy.start.bean.dto.sys.user.UserEditDTO;
+import com.easy.start.bean.dto.sys.user.UserPwdDTO;
 import com.easy.start.bean.dto.sys.user.UserSearchDTO;
 import com.easy.start.bean.entity.sys.*;
 import com.easy.start.bean.vo.sys.UserRoleAndPermissionVO;
@@ -91,7 +93,9 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
         List<UserVO> list = records.stream().map(user -> {
             UserVO userVO = new UserVO();
             BeanUtil.copyProperties(user, userVO);
-            userVO.setPhone(user.getPhonePrefix() + "****" + user.getPhoneSuffix());
+            if (StringUtils.isNotBlank(user.getPhone())) {
+                userVO.setPhone(user.getPhonePrefix() + "****" + user.getPhoneSuffix());
+            }
             SysUserInfo userInfo = userInfoMap.get(user.getId());
             if (userInfo != null) {
                 BeanUtil.copyProperties(userInfo, userVO);
@@ -226,16 +230,32 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
     public UserExpandVO getUserInfo(String userId) {
         UserExpandVO userInfo = this.baseMapper.selectUserAndInfo(userId);
         //  岗位、角色、组织关联查询
-        UserRoleAndPermissionVO roleAndPermission = roleService.getUserRoleKeyList(userInfo.getUserId());
-        if (roleAndPermission != null) {
-            userInfo.setRoleKeyList(roleAndPermission.getRoles().stream().map(SysRole::getRoleKey).toList());
-            userInfo.setRoleList(roleAndPermission.getRoles());
-            userInfo.setPermissionList(roleAndPermission.getPermissions());
+        try {
+            UserRoleAndPermissionVO roleAndPermission = roleService.getUserRoleKeyList(userInfo.getUserId());
+            if (roleAndPermission != null) {
+                userInfo.setRoleKeyList(roleAndPermission.getRoles().stream().map(SysRole::getRoleKey).toList());
+                userInfo.setRoleList(roleAndPermission.getRoles());
+                userInfo.setPermissionList(roleAndPermission.getPermissions());
+            }
+            SysUserOrg userOrg = userOrgService.lambdaQuery().eq(SysUserOrg::getUserId, userId).one();
+            if (userOrg != null) {
+                userInfo.setOrgId(userOrg.getOrgId());
+            }
+        } catch (Exception e) {
+            StpUtil.logout(userId);
+            throw new CustomizeException(e.getMessage());
         }
-        SysUserOrg userOrg = userOrgService.lambdaQuery().eq(SysUserOrg::getUserId, userId).one();
-        if (userOrg != null) {
-            userInfo.setOrgId(userOrg.getOrgId());
-        }
+
         return userInfo;
+    }
+
+    public void resetPassword(@Valid UserPwdDTO dto) {
+        // 校验两个密码是否一致
+        if (!dto.getNewPwd().equals(dto.getConfirmPwd())) {
+            throw new CustomizeException("两次输入密码不一致");
+        }
+        SysUser user = this.lambdaQuery().eq(SysUser::getId, dto.getUserId()).one();
+        user.setPassword(BCrypt.hashpw(dto.getConfirmPwd()));
+        this.updateById(user);
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/easy-common/easy-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-auth/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-auth/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-database/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-database/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-redis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-redis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-utils/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-utils/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-common-web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-datasource/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-datasource/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-redis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-redis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-tool/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-tool/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/easy-web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-start/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/easy-start/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/start/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/start/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

@@ -38,7 +38,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
         dto.setIsSystem(true);
         List<ConfigVO> list = getSysConfigVOList(dto);
         if (CollUtil.isNotEmpty(list)) {
-            RedisUtils.setCacheList(RedisConstants.SYSTEM_CONFIG, list);
+            RedisUtils.setCacheNewList(RedisConstants.SYSTEM_CONFIG, list);
         }
     }
 

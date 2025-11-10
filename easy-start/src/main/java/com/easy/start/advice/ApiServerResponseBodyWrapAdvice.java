@@ -1,9 +1,9 @@
-package com.easy.web.advice;
+package com.easy.start.advice;
 
-
-import com.alibaba.fastjson2.JSON;
-import com.easy.core.base.R;
-import com.easy.web.annotation.ResultWrap;
+import com.alibaba.fastjson2.JSONObject;
+import com.easy.start.annotation.ApiServer;
+import com.easy.start.constant.ApiConstants;
+import com.easy.start.utils.ApiSignUtils;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -14,16 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import java.util.Objects;
-
 /**
  * <p>自动包装</p>
  *
- * @author 小徐
- * @since 2023/9/12 14:43
+ * @author matt
  */
 @RestControllerAdvice(annotations = RequestMapping.class)
-public class ResponseBodyWrapAdvice implements ResponseBodyAdvice<Object> {
+public class ***REMOVE_SECRET*** implements ResponseBodyAdvice<Object> {
 
     /**
      * 该组件是否支持给定的控制器方法返回类型
@@ -34,7 +31,9 @@ public class ResponseBodyWrapAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(@NotNull MethodParameter returnType, @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
-        return needWrapper(returnType);
+        ApiServer methodAnnotation = returnType.getMethodAnnotation(ApiServer.class);
+        // 如果有注解ApiServer，就对响应参数进行加密返回
+        return methodAnnotation != null && methodAnnotation.responseEncrypt();
     }
 
     /**
@@ -54,23 +53,7 @@ public class ResponseBodyWrapAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, @NotNull MethodParameter returnType, @NotNull MediaType selectedContentType,
                                   @NotNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   @NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response) {
-        boolean bodyIsString = returnType.getParameterType() == String.class;
-        R<Object> r;
-        if (body instanceof R) {
-            r = (R<Object>) body;
-        } else {
-            r = R.success(body);
-        }
-        return bodyIsString ? JSON.toJSONString(r) : r;
-    }
-
-    private boolean needWrapper(MethodParameter methodParameter) {
-        // 解析方法上的注解
-        if (methodParameter.getAnnotatedElement().isAnnotationPresent(ResultWrap.class)) {
-            ResultWrap wrap = Objects.requireNonNull(methodParameter.getMethod()).getAnnotation(ResultWrap.class);
-            // 输出注解属性
-            return !wrap.disabled();
-        }
-        return true;
+        String reqParams = request.getHeaders().getFirst(ApiConstants.SIGN_KEY);
+        return ApiSignUtils.encryptResponse(reqParams, JSONObject.toJSONString(body));
     }
 }

@@ -10,7 +10,7 @@ public interface Constants {
     /**
      * 管理员角色
      */
-    String ADMIN_ROLE = "admin";
+    String ADMIN_ROLE_KEY = "admin";
     /**
      * UTF-8 字符集
      */

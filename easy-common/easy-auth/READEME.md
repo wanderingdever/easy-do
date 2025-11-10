@@ -1,9 +1,7 @@
 # 权限模块
-
 > 继承该模块需要实现StpInterface
 
 ## SaTokenPermissionConfig
-
 ```java
 
 

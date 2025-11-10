@@ -22,6 +22,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 登录服务
  * </p>
@@ -60,6 +62,13 @@ public class LoginService {
         StpUtil.login(user.getId(), loginModel);
         // 获取登录信息
         SaTokenInfo saTokenInfo = StpUtil.getTokenInfo();
+
+        // 校验菜单权限
+        List<String> permissionList = StpUtil.getPermissionList();
+        if (permissionList.isEmpty()) {
+            throw new CustomizeException("菜单权限不足");
+        }
+
         // 保存登录记录
         loginLogs(login, user);
         return new TokenInfo(saTokenInfo.getTokenValue(), saTokenInfo.getTokenTimeout(), saTokenInfo.getLoginDeviceType());

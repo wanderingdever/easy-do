@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.base.dto.IdDTO;
+import com.easy.core.constant.Constants;
 import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.utils.PageUtils;
 import com.easy.start.bean.dto.sys.role.RoleDTO;
@@ -131,10 +132,16 @@ public class SysRoleService extends ServiceImpl<SysRoleMapper, SysRole> {
         }
         // 查询role id
         List<String> roleIdList = userRoleList.stream().map(SysUserRole::getRoleId).toList();
-        // 查询权限集合
-        List<String> permissions = menuService.getPermissionByRoleId(roleIdList);
         // 查询角色key集合
         List<SysRole> roles = baseMapper.selectByIds(roleIdList);
+
+        List<String> permissions;
+        // 包含管理员角色
+        if (roles.stream().map(SysRole::getRoleKey).toList().contains(Constants.ADMIN_ROLE_KEY)) {
+            permissions = menuService.getAllPermission();
+        } else {
+            permissions = menuService.getPermissionByRoleId(roleIdList);
+        }
         return new UserRoleAndPermissionVO(roles, permissions);
     }
 

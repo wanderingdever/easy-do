@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.easy.core.base.dto.IdDTO;
 import com.easy.start.bean.dto.sys.user.UserDTO;
 import com.easy.start.bean.dto.sys.user.UserEditDTO;
+import com.easy.start.bean.dto.sys.user.UserPwdDTO;
 import com.easy.start.bean.dto.sys.user.UserSearchDTO;
 import com.easy.start.bean.vo.sys.user.UserExpandVO;
 import com.easy.start.bean.vo.sys.user.UserVO;
@@ -80,4 +81,10 @@ public class UserController {
         return "删除成功";
     }
 
+    @PostMapping("/reset_password")
+    @Operation(summary = "重置密码")
+    public String resetPassword(@Valid @RequestBody UserPwdDTO dto) {
+        userService.resetPassword(dto);
+        return "重置成功";
+    }
 }

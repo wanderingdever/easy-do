@@ -252,6 +252,34 @@ public class RedisUtils {
         return rList.addAll(dataList);
     }
 
+
+    /**
+     * 缓存List数据
+     *
+     * @param key      缓存的键值
+     * @param dataList 待缓存的List数据
+     * @param duration 时间
+     */
+    public static <T> void setCacheList(final String key, final List<T> dataList, final Duration duration) {
+        RBatch batch = CLIENT.createBatch();
+        RList<T> rList = CLIENT.getList(key);
+        rList.addAll(dataList);
+        rList.expireAsync(duration);
+        batch.execute();
+    }
+
+    /**
+     * 缓存List数据
+     *
+     * @param key            缓存的键值
+     * @param dataList       待缓存的List数据
+     * @param expirationTime 具体过期时间
+     */
+    public static <T> void setCacheListWithExpireTime(final String key, final List<T> dataList, final LocalDateTime expirationTime) {
+        long millisUntilExpiration = ChronoUnit.MILLIS.between(LocalDateTime.now(), expirationTime);
+        setCacheList(key, dataList, Duration.ofMillis(millisUntilExpiration));
+    }
+
     /**
      * 缓存List数据
      *
@@ -298,6 +326,18 @@ public class RedisUtils {
      */
     public static <T> boolean setCacheSet(final String key, final Set<T> dataSet) {
         RSet<T> rSet = CLIENT.getSet(key);
+        return rSet.addAll(dataSet);
+    }
+
+    /**
+     * 缓存Set并覆盖原来的值
+     *
+     * @param key     缓存键值
+     * @param dataSet 缓存的数据
+     */
+    public static <T> boolean setCacheNewSet(final String key, final Set<T> dataSet) {
+        RSet<T> rSet = CLIENT.getSet(key);
+        rSet.clear(); // 清空现有集合
         return rSet.addAll(dataSet);
     }
 

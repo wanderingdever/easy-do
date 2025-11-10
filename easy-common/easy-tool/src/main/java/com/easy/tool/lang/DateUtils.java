@@ -1,6 +1,9 @@
 package com.easy.tool.lang;
 
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+
+import java.util.Date;
 
 
 /**
@@ -24,6 +27,24 @@ public class DateUtils extends DateUtil {
 
     private DateUtils() {
         throw new IllegalAccessError("DateUtils.class");
+    }
+
+    /**
+     * 获取当前年月日
+     *
+     * @return 日期数字 即年月日 如20180808
+     */
+    public static String dateNum() {
+        return format(new Date(), DatePattern.PURE_DATE_PATTERN);
+    }
+
+    /**
+     * 获取当前 时 分 秒 毫秒
+     *
+     * @return 日期数字  如154320846
+     */
+    public static String timeNum() {
+        return format(new Date(), DatePattern.PURE_TIME_FORMATTER);
     }
 
 }

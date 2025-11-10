@@ -50,7 +50,7 @@ public class RoleController {
         return "修改成功";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/del")
     @Operation(summary = "删除角色")
     public String deleteRole(@RequestBody IdDTO dto) {
         roleService.deleteRole(dto.getId());

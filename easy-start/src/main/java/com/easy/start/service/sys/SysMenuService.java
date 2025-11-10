@@ -87,14 +87,26 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
         // 查询角色->菜单权限关联表
         List<SysRoleMenu> list = roleMenuService.lambdaQuery().in(SysRoleMenu::getRoleId, roleIdList).list();
         if (list.isEmpty()) {
-            throw new CustomizeException("角色->菜单权限关联不存在");
+            throw new CustomizeException("菜单权限不足");
         }
         // 提取菜单权限
         List<String> menuIds = list.stream().map(SysRoleMenu::getMenuId).toList();
         // 查询菜单信息
         List<SysMenu> menuList = lambdaQuery().in(SysMenu::getId, menuIds).list();
         // 提取菜单权限
-        return menuList.stream().map(SysMenu::getPerms).toList();
+        return menuList.stream().map(SysMenu::getPerms).toList().stream().filter(StringUtils::isNotBlank).toList();
+    }
+
+    /**
+     * 获取所有菜单权限
+     *
+     * @return 菜单权限集合
+     */
+    public List<String> getAllPermission() {
+        // 查询菜单信息
+        List<SysMenu> menuList = lambdaQuery().list();
+        // 提取菜单权限
+        return menuList.stream().map(SysMenu::getPerms).toList().stream().filter(StringUtils::isNotBlank).toList();
     }
 
     public List<RouterVO> getUserRouter(String userId) {
@@ -136,14 +148,14 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
     public List<SysMenu> getMenuList(MenuSearchDTO dto) {
         List<SysMenu> treeList;
         // 管理员角色
-        if (StpUtil.getRoleList().contains(Constants.ADMIN_ROLE)) {
+        if (StpUtil.getRoleList().contains(Constants.ADMIN_ROLE_KEY)) {
             treeList = this.lambdaQuery()
                     .eq(StringUtils.isNotBlank(dto.getMenuName()), SysMenu::getMenuName, dto.getMenuName())
                     .in(CollUtil.isNotEmpty(dto.getMenuType()), SysMenu::getMenuType, dto.getMenuType())
                     .orderByAsc(SysMenu::getOrderNum)
                     .list();
         } else {
-            treeList = this.baseMapper.getMenuList(dto);
+            treeList = this.baseMapper.getMenuList(dto).stream().distinct().toList();
         }
         return treeList;
     }
@@ -179,4 +191,6 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
         String replace = path.replace("/", "_");
         return StringUtils.toCamelCase(replace);
     }
+
+
 }
