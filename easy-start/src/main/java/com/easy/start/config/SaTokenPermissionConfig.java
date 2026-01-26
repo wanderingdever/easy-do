@@ -2,13 +2,14 @@ package com.easy.start.config;
 
 
 import cn.dev33.satoken.stp.StpInterface;
-import com.easy.core.exception.CustomizeException;
 import com.easy.start.bean.entity.sys.SysRole;
 import com.easy.start.bean.vo.sys.UserRoleAndPermissionVO;
 import com.easy.start.service.sys.SysRoleService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ import java.util.List;
  * @author Matt
  */
 @Component
+@Slf4j
 public class SaTokenPermissionConfig implements StpInterface {
 
     @Resource
@@ -31,7 +33,8 @@ public class SaTokenPermissionConfig implements StpInterface {
     public List<String> getPermissionList(Object loginId, String loginType) {
         UserRoleAndPermissionVO userRoleAndPermission = roleService.getUserRoleKeyList((String) loginId);
         if (userRoleAndPermission == null) {
-            throw new CustomizeException("用户权限异常");
+            log.error("获取用权限异常，无权限数据。用户ID：{}", loginId);
+            return new ArrayList<>();
         }
         return userRoleAndPermission.getPermissions();
     }
@@ -43,7 +46,8 @@ public class SaTokenPermissionConfig implements StpInterface {
     public List<String> getRoleList(Object loginId, String loginType) {
         List<SysRole> userRoleList = roleService.getUserRoleList((String) loginId);
         if (userRoleList == null) {
-            throw new CustomizeException("用户角色异常");
+            log.error("获取用户角色异常，无角色数据。用户ID：{}", loginId);
+            return new ArrayList<>();
         }
         return userRoleList.stream().map(SysRole::getRoleKey).toList();
     }
