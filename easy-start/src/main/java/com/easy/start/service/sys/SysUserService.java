@@ -2,6 +2,7 @@ package com.easy.start.service.sys;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,13 +19,16 @@ import com.easy.start.bean.vo.sys.user.UserExpandVO;
 import com.easy.start.bean.vo.sys.user.UserVO;
 import com.easy.start.dao.sys.SysUserMapper;
 import com.easy.tool.crypto.SecureUtils;
+import com.easy.tool.file.Base64FileUtil;
 import com.easy.tool.lang.IdUtils;
 import com.easy.tool.lang.StringUtils;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -257,5 +261,20 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
         SysUser user = this.lambdaQuery().eq(SysUser::getId, dto.getUserId()).one();
         user.setPassword(BCrypt.hashpw(dto.getConfirmPwd()));
         this.updateById(user);
+    }
+
+    /**
+     * 更新头像
+     *
+     * @param avatar 用户头像
+     * @throws IOException 异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateAvatar(MultipartFile avatar) throws IOException {
+        // 转换为Base64字符串
+        String base64Encoded = Base64.encode(avatar.getBytes());
+        SysUserInfo one = userInfoService.lambdaQuery().eq(SysUserInfo::getId, StpUtil.getLoginId()).one();
+        one.setAvatar(Base64FileUtil.fixBase64Image(base64Encoded));
+        userInfoService.updateById(one);
     }
 }

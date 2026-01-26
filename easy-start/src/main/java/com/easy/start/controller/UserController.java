@@ -20,6 +20,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 /**
@@ -86,5 +89,14 @@ public class UserController {
     public String resetPassword(@Valid @RequestBody UserPwdDTO dto) {
         userService.resetPassword(dto);
         return "重置成功";
+    }
+
+    /**
+     * 更新用户头像
+     */
+    @PostMapping("/update_avatar")
+    @Operation(summary = "更新用户头像")
+    public void updateAvatar(@RequestPart(name = "avatar") MultipartFile avatar) throws IOException {
+        userService.updateAvatar(avatar);
     }
 }

@@ -1,6 +1,8 @@
 package com.easy.tool.lang;
 
+import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 
 import java.util.Date;
@@ -47,4 +49,26 @@ public class DateUtils extends DateUtil {
         return format(new Date(), DatePattern.PURE_TIME_FORMATTER);
     }
 
+    /**
+     * 获取当前年月日
+     *
+     * @return 日期路径 即年/月/日 如2018/08/08
+     */
+    public static String datePath() {
+        return format(new Date(), DATE_PATH);
+    }
+
+    /**
+     * 获取当前时间到次日时间还有多少分钟
+     *
+     * @return 分钟数
+     */
+    public static long getMinutesToNextDay() {
+        // 获取当前时间
+        Date now = new Date();
+        // 获取次日时间
+        Date nextDay = DateUtil.offset(now, DateField.DAY_OF_MONTH, 1);
+        // 计算分钟数
+        return DateUtil.between(now, nextDay, DateUnit.MINUTE);
+    }
 }
