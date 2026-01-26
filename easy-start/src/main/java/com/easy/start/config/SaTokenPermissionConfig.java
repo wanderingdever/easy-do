@@ -41,10 +41,10 @@ public class SaTokenPermissionConfig implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        UserRoleAndPermissionVO userRoleAndPermission = roleService.getUserRoleKeyList((String) loginId);
-        if (userRoleAndPermission == null) {
+        List<SysRole> userRoleList = roleService.getUserRoleList((String) loginId);
+        if (userRoleList == null) {
             throw new CustomizeException("用户角色异常");
         }
-        return userRoleAndPermission.getRoles().stream().map(SysRole::getRoleKey).toList();
+        return userRoleList.stream().map(SysRole::getRoleKey).toList();
     }
 }

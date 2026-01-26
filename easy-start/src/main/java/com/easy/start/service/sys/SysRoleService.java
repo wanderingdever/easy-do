@@ -167,4 +167,20 @@ public class SysRoleService extends ServiceImpl<SysRoleMapper, SysRole> {
         }
         return list.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
     }
+
+    /**
+     * 获取用户角色
+     */
+    public List<SysRole> getUserRoleList(String userId) {
+        // 查询用户角色关联
+        List<SysUserRole> userRoleList = userRoleService.lambdaQuery().eq(SysUserRole::getUserId, userId).list();
+        if (CollUtil.isEmpty(userRoleList)) {
+            return null;
+        }
+        // 查询role id
+        List<String> roleIdList = userRoleList.stream().map(SysUserRole::getRoleId).toList();
+        // 查询角色key集合
+        return baseMapper.selectByIds(roleIdList);
+    }
+
 }
