@@ -1,4 +1,4 @@
-package com.easy.start.utils;
+package com.easy.client.utils;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.Mode;
@@ -8,15 +8,8 @@ import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.SM2;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
-import com.alibaba.fastjson2.JSON;
-import com.easy.core.exception.CustomizeException;
-import com.easy.redis.utils.RedisUtils;
-import com.easy.start.bean.dto.sys.api.ApiHeaderParam;
-import com.easy.start.bean.entity.sys.OpenApiUserAuthInfo;
-import com.easy.start.constant.ApiConstants;
 import com.easy.tool.crypto.SecureUtils;
 import com.easy.tool.lang.IdUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import org.bouncycastle.util.Strings;
 import org.bouncycastle.util.encoders.Hex;
 
@@ -28,45 +21,6 @@ import org.bouncycastle.util.encoders.Hex;
  * @author Matt
  */
 public class ApiSignUtils {
-
-    private static OpenApiUserAuthInfo getAuthInfo(String reqParams) {
-        ApiHeaderParam apiHeaderParam = JSON.parseObject(reqParams, ApiHeaderParam.class);
-        OpenApiUserAuthInfo apiAuthInfo = RedisUtils.getCacheObject(ApiConstants.USER_API_AUTH_INFO_REDIS_KEY + apiHeaderParam.getAppId());
-        if (apiAuthInfo == null) {
-            throw new CustomizeException("授权信息错误");
-        }
-        return apiAuthInfo;
-    }
-
-    /**
-     * 解密请求参数
-     */
-    public static <T> T decryptRequest(HttpServletRequest request, String data, Class<T> clazz) {
-        String reqParams = request.getHeader(ApiConstants.SIGN_KEY);
-        OpenApiUserAuthInfo apiAuthInfo = getAuthInfo(reqParams);
-        String reqParam;
-        try {
-            reqParam = ApiSignUtils.decryptBizParameter(apiAuthInfo.getSm2PrivateKey(), apiAuthInfo.getSm2PublicKey(), data);
-        } catch (Exception e) {
-            throw new CustomizeException("业务参数加密验证失败");
-        }
-        return JSON.parseObject(reqParam, clazz);
-    }
-
-
-    /**
-     * 加密响应参数
-     * 使用AES对称加解密工具文件中AESUtils类的encrypt方法对加密文本进行加密，其中密钥secretKey和向量偏移量ivKey
-     *
-     * @param data      加密文本
-     * @param reqParams 请求头参数
-     */
-    public static String encryptResponse(String reqParams, String data) {
-        OpenApiUserAuthInfo apiAuthInfo = getAuthInfo(reqParams);
-        AES aes = new AES(Mode.CBC, Padding.PKCS5Padding, apiAuthInfo.getAesKey().getBytes(), apiAuthInfo.getAesIv().getBytes());
-        return aes.encryptBase64(data);
-    }
-
 
     /**
      * TOKEN是SHA1生成16位小写签名串。将AppSecret参数拼接到timestamp头部、randomStr拼接到timestamp参数字符串尾部,SHA1加密后格式是示例：SHA1(AppSecret+timestamp+randomStr)。

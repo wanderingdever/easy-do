@@ -1,9 +1,9 @@
 package com.easy.start.advice;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.easy.client.constant.ApiConstants;
 import com.easy.start.annotation.ApiServer;
-import com.easy.start.constant.ApiConstants;
-import com.easy.start.utils.ApiSignUtils;
+import com.easy.start.utils.ApiServerUtils;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -54,6 +54,7 @@ public class ***REMOVE_SECRET*** implements ResponseBodyAdvice<Object> {
                                   @NotNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   @NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response) {
         String reqParams = request.getHeaders().getFirst(ApiConstants.SIGN_KEY);
-        return ApiSignUtils.encryptResponse(reqParams, JSONObject.toJSONString(body));
+        return ApiServerUtils.encryptResponse(reqParams, JSONObject.toJSONString(body));
     }
+
 }

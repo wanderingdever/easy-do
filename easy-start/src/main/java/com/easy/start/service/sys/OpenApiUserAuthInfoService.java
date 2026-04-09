@@ -2,16 +2,16 @@ package com.easy.start.service.sys;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.client.constant.ApiConstants;
+import com.easy.client.utils.ApiSignUtils;
+import com.easy.client.utils.SM2KeyPair;
 import com.easy.core.exception.CustomizeException;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.entity.sys.OpenApiAuth;
 import com.easy.start.bean.entity.sys.OpenApiList;
 import com.easy.start.bean.entity.sys.OpenApiUserAuthInfo;
-import com.easy.start.constant.ApiConstants;
 import com.easy.start.dao.sys.OpenApiUserAuthInfoMapper;
 import com.easy.start.enums.ApiAuthStatus;
-import com.easy.start.utils.ApiSignUtils;
-import com.easy.start.utils.SM2KeyPair;
 import com.easy.tool.lang.IdUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -49,7 +49,14 @@ public class OpenApiUserAuthInfoService extends ServiceImpl<OpenApiUserAuthInfoM
             return;
         }
         for (OpenApiUserAuthInfo userApiAuthInfo : list) {
-            userApiAuthInfo.setOpenApiList(getAppidApiList(userApiAuthInfo.getAppid()));
+            List<OpenApiList> appidApiList = new ArrayList<>();
+            appidApiList.add(new OpenApiList("测试接口", "/api/test", 100, true));
+            List<OpenApiList> authList = getAppidApiList(userApiAuthInfo.getAppid());
+            if (authList != null && !authList.isEmpty()) {
+                appidApiList.addAll(authList);
+            }
+            // 默认增加测试接口
+            userApiAuthInfo.setOpenApiList(appidApiList);
             RedisUtils.setCacheObject(ApiConstants.USER_API_AUTH_INFO_REDIS_KEY + userApiAuthInfo.getAppid(), userApiAuthInfo);
         }
     }

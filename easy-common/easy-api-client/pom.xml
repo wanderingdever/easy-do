@@ -5,26 +5,23 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.easy</groupId>
-        <artifactId>easy-boot</artifactId>
+        <artifactId>easy-common</artifactId>
         <version>1.0</version>
     </parent>
-    <packaging>pom</packaging>
-    <artifactId>easy-common</artifactId>
+    <packaging>jar</packaging>
+    <artifactId>easy-api-client</artifactId>
 
-    <modules>
-        <module>easy-web</module>
-        <module>easy-tool</module>
-        <module>easy-core</module>
-        <module>easy-datasource</module>
-        <module>easy-redis</module>
-        <module>easy-auth</module>
-        <module>easy-api-client</module>
-
-    </modules>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-core</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

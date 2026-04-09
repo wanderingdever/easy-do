@@ -1,4 +1,4 @@
-package com.easy.start.utils;
+package com.easy.client.utils;
 
 /**
  * </p>

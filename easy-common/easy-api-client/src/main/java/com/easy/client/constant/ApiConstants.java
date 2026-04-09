@@ -1,4 +1,4 @@
-package com.easy.start.constant;
+package com.easy.client.constant;
 
 /**
  * </p>
@@ -11,6 +11,12 @@ public interface ApiConstants {
      * 签名key
      */
     String SIGN_KEY = "signParam";
+
+    /**
+     * 业务参数key
+     */
+    String REQ_PARAM_KEY = "reqParam";
+
 
     /*
      * 预生成的appid redis key

@@ -1,8 +1,8 @@
 package com.easy.tool.file;
 
 
-import com.dawn.fintech.tool.lang.DateUtils;
-import com.dawn.fintech.tool.lang.IdUtils;
+import com.easy.tool.lang.DateUtils;
+import com.easy.tool.lang.IdUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;

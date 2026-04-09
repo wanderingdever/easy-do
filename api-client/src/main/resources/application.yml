@@ -1,0 +1,23 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: api-client
+  config:
+    import:
+      - optional:application-web.yml
+  profiles:
+    active: dev
+easy:
+  api:
+    client:
+      base-url: http://192.168.0.51:8888
+      appid: umTaOMA2Nnp9WII4ebYsTts3
+      private-key: ***REMOVE_SECRET***
+      public-key: ***REMOVE_SECRET***
+      aes-key: broQWbSlOhJwrKVj
+      aes-iv: hm2j0dFYL6PBZA9K
+      connect-timeout: 30
+      read-timeout: 30
+      write-timeout: 30

@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.easy.core.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -18,7 +20,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("open_api_list")
-@Schema(name = "OpenApiList", description = "")
+@Schema(name = "OpenApiList", description = "授权api列表")
+@AllArgsConstructor
+@NoArgsConstructor
 public class OpenApiList extends BaseEntity {
 
     @Schema(description = "接口名称")

@@ -1,10 +1,8 @@
-package com.easy.start.bean.dto.sys.api;
+package com.easy.apiClient.entity;
 
-import com.easy.client.entity.ApiRequestParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -13,14 +11,10 @@ import java.util.List;
  *
  * @author Matt
  */
-@EqualsAndHashCode(callSuper = true)
-@Schema(description = "API管理DTO")
+@Schema(description = "API测试响应")
 @Data
-public class ApiDTO extends ApiRequestParam {
+public class ApiTest {
 
-    @NotBlank(message = "用户不能为空")
-    @Schema(description = "userId")
-    private String userId;
 
     @NotBlank(message = "appid不能为空")
     @Schema(description = "appid")

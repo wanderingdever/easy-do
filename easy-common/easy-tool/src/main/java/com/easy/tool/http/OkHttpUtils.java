@@ -151,6 +151,9 @@ public class OkHttpUtils {
         if (paramMap == null) {
             paramMap = new LinkedHashMap<>(16);
         }
+        if (value == null) {
+            return this;
+        }
         paramMap.put(key, value);
         return this;
     }
