@@ -254,6 +254,9 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
     }
 
     public void resetPassword(@Valid UserPwdDTO dto) {
+        if (StringUtils.isBlank(dto.getUserId())) {
+            throw new CustomizeException("用户不能为空");
+        }
         // 校验两个密码是否一致
         if (!dto.getNewPwd().equals(dto.getConfirmPwd())) {
             throw new CustomizeException("两次输入密码不一致");
@@ -276,5 +279,38 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
         SysUserInfo one = userInfoService.lambdaQuery().eq(SysUserInfo::getId, StpUtil.getLoginId()).one();
         one.setAvatar(Base64FileUtil.fixBase64Image(base64Encoded));
         userInfoService.updateById(one);
+    }
+
+    /**
+     * 获取用户手机号
+     *
+     * @param userId 用户ID
+     * @return 解密后的手机号
+     */
+    public String getPhone(String userId) {
+        SysUser user = this.getById(userId);
+        return SecureUtils.sm4PhoneDecrypt(user.getPhone());
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param dto 用户密码信息
+     */
+    public void changePassword(UserPwdDTO dto) {
+        if (StringUtils.isBlank(dto.getOldPwd())) {
+            throw new CustomizeException("原密码不能为空");
+        }
+        SysUser user = this.lambdaQuery().eq(SysUser::getId, StpUtil.getLoginIdAsString()).one();
+        // 校验旧密码是否正确
+        if (!BCrypt.checkpw(dto.getOldPwd(), user.getPassword())) {
+            throw new CustomizeException("原密码错误");
+        }
+        // 校验两个密码是否一致
+        if (!dto.getNewPwd().equals(dto.getConfirmPwd())) {
+            throw new CustomizeException("两次输入密码不一致");
+        }
+        user.setPassword(BCrypt.hashpw(dto.getConfirmPwd()));
+        this.updateById(user);
     }
 }

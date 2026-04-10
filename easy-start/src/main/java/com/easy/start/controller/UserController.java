@@ -84,6 +84,21 @@ public class UserController {
         return "删除成功";
     }
 
+    /**
+     * 修改密码
+     */
+    @PostMapping("/change_password")
+    @Operation(summary = "修改密码")
+    public String changePassword(@Valid @RequestBody UserPwdDTO dto) {
+        userService.changePassword(dto);
+        return "修改成功";
+    }
+
+    /**
+     * 重置密码
+     *
+     * @return 操作结果
+     */
     @PostMapping("/reset_password")
     @Operation(summary = "重置密码")
     public String resetPassword(@Valid @RequestBody UserPwdDTO dto) {
@@ -98,5 +113,14 @@ public class UserController {
     @Operation(summary = "更新用户头像")
     public void updateAvatar(@RequestPart(name = "avatar") MultipartFile avatar) throws IOException {
         userService.updateAvatar(avatar);
+    }
+
+    /**
+     * 获取用户手机号
+     */
+    @GetMapping("/get_phone")
+    @Operation(summary = "获取用户手机号")
+    public String getPhone() {
+        return userService.getPhone(StpUtil.getLoginIdAsString());
     }
 }

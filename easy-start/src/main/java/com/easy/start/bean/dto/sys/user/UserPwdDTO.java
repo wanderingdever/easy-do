@@ -5,19 +5,22 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * 用户重置密码信息
+ * 用户密码信息
  * </p>
  *
  * @author Matt
  */
 @Data
-@Schema(title = "用户重置密码信息-入参")
+@Schema(title = "用户密码信息-入参")
 public class UserPwdDTO {
 
 
     @Schema(description = "用户ID", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "用户不能为空")
     private String userId;
+
+    @Schema(description = "旧密码")
+    @NotBlank(message = "旧密码不能为空")
+    private String oldPwd;
 
     @Schema(description = "新密码")
     @NotBlank(message = "新密码不能为空")
