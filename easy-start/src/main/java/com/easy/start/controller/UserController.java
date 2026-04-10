@@ -5,6 +5,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.easy.core.base.dto.IdDTO;
+import com.easy.start.bean.dto.EmailDTO;
 import com.easy.start.bean.dto.sys.user.UserDTO;
 import com.easy.start.bean.dto.sys.user.UserEditDTO;
 import com.easy.start.bean.dto.sys.user.UserPwdDTO;
@@ -118,9 +119,19 @@ public class UserController {
     /**
      * 获取用户手机号
      */
-    @GetMapping("/get_phone")
+    @GetMapping("/get_phone/{userId}")
     @Operation(summary = "获取用户手机号")
-    public String getPhone() {
-        return userService.getPhone(StpUtil.getLoginIdAsString());
+    public String getPhone(@PathVariable("userId") String userId) {
+        return userService.getPhone(userId);
+    }
+
+    /**
+     * 绑定邮箱
+     */
+    @PostMapping("/bind_email")
+    @Operation(summary = "绑定邮箱")
+    public String bindEmail(@Valid @RequestBody EmailDTO dto) {
+        userService.bindEmail(dto);
+        return "绑定成功";
     }
 }

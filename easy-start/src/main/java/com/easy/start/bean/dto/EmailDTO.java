@@ -25,4 +25,7 @@ public class EmailDTO {
     @Schema(description = "验证码类型", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "验证码类型不能为空。")
     private MailCodeType type;
+
+    @Schema(description = "验证码")
+    private String code;
 }

@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.utils.PageUtils;
+import com.easy.redis.utils.RedisUtils;
+import com.easy.start.bean.dto.EmailDTO;
 import com.easy.start.bean.dto.sys.user.UserDTO;
 import com.easy.start.bean.dto.sys.user.UserEditDTO;
 import com.easy.start.bean.dto.sys.user.UserPwdDTO;
@@ -289,7 +291,10 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
      */
     public String getPhone(String userId) {
         SysUser user = this.getById(userId);
-        return SecureUtils.sm4PhoneDecrypt(user.getPhone());
+        if (StringUtils.isNotBlank(user.getPhone())) {
+            return SecureUtils.sm4PhoneDecrypt(user.getPhone());
+        }
+        return "";
     }
 
     /**
@@ -297,6 +302,7 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
      *
      * @param dto 用户密码信息
      */
+    @Transactional(rollbackFor = Exception.class)
     public void changePassword(UserPwdDTO dto) {
         if (StringUtils.isBlank(dto.getOldPwd())) {
             throw new CustomizeException("原密码不能为空");
@@ -311,6 +317,26 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
             throw new CustomizeException("两次输入密码不一致");
         }
         user.setPassword(BCrypt.hashpw(dto.getConfirmPwd()));
+        this.updateById(user);
+    }
+
+    /**
+     * 绑定邮箱
+     *
+     * @param dto 邮箱参数
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void bindEmail(EmailDTO dto) {
+        if (StringUtils.isBlank(dto.getCode())) {
+            throw new CustomizeException("验证码不能为空");
+        }
+        Object redisCode = RedisUtils.getCacheObject(dto.getType().getRedisKey() + dto.getEmail());
+        // 校验验证码是否正确
+        if (!dto.getCode().equals(redisCode)) {
+            throw new CustomizeException("验证码错误");
+        }
+        SysUser user = this.lambdaQuery().eq(SysUser::getId, StpUtil.getLoginIdAsString()).one();
+        user.setEmail(dto.getEmail());
         this.updateById(user);
     }
 }

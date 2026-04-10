@@ -87,7 +87,7 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
         // 查询角色->菜单权限关联表
         List<SysRoleMenu> list = roleMenuService.lambdaQuery().in(SysRoleMenu::getRoleId, roleIdList).list();
         if (list.isEmpty()) {
-            throw new CustomizeException("菜单权限不足");
+            return List.of();
         }
         // 提取菜单权限
         List<String> menuIds = list.stream().map(SysRoleMenu::getMenuId).toList();
