@@ -49,7 +49,7 @@ public class ApiServerAspect {
     /**
      * 定义切点
      */
-    @Pointcut("@within(com.easy.start.annotation.ApiServer) || @annotation(com.easy.start.annotation.ApiServer)")
+    @Pointcut("@within(com.easy.client.annotation.ApiServer) || @annotation(com.easy.client.annotation.ApiServer)")
     public void preventDuplication() {
     }
 

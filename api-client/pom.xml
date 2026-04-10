@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-api-client</artifactId>
+            <artifactId>easy-api</artifactId>
         </dependency>
     </dependencies>
 

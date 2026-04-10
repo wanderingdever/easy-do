@@ -18,7 +18,7 @@
         <module>easy-datasource</module>
         <module>easy-redis</module>
         <module>easy-auth</module>
-        <module>easy-api-client</module>
+        <module>easy-api</module>
 
     </modules>
     <properties>

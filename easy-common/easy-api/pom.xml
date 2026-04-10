@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
     <packaging>jar</packaging>
-    <artifactId>easy-api-client</artifactId>
+    <artifactId>easy-api</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
