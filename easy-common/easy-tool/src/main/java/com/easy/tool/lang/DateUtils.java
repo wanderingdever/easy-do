@@ -5,7 +5,10 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -70,5 +73,47 @@ public class DateUtils extends DateUtil {
         Date nextDay = DateUtil.offset(now, DateField.DAY_OF_MONTH, 1);
         // 计算分钟数
         return DateUtil.between(now, nextDay, DateUnit.MINUTE);
+    }
+
+    /**
+     * 找出两个日期间的所有日期
+     *
+     * @param beginTime 开始日期
+     * @param endTime   结束日期
+     * @param formatter 格式化
+     * @param reverse   是否反转日期
+     * @return 日期集合
+     */
+    public static List<String> findEveryDay(String beginTime, String endTime, String formatter, boolean reverse) {
+        List<String> dates = findEveryDay(beginTime, endTime, formatter);
+        if (reverse) {
+            java.util.Collections.reverse(dates);
+        }
+        return dates;
+    }
+
+    /**
+     * 传入两个时间范围，返回这两个时间范围内的所有日期，并保存在一个集合中
+     */
+    public static List<String> findEveryDay(String beginTime, String endTime, String formatter) {
+        List<String> dates = new ArrayList<>();
+        Date dBegin = parse(beginTime, formatter);
+        Date dEnd = parse(endTime, formatter);
+
+        if (dBegin.after(dEnd)) {
+            Date temp = dBegin;
+            dBegin = dEnd;
+            dEnd = temp;
+        }
+
+        dates.add(format(dBegin, formatter));
+        Calendar calBegin = Calendar.getInstance();
+        calBegin.setTime(dBegin);
+
+        while (dEnd.after(calBegin.getTime())) {
+            calBegin.add(Calendar.DAY_OF_MONTH, 1);
+            dates.add(format(calBegin.getTime(), formatter));
+        }
+        return dates;
     }
 }
