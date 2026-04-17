@@ -22,6 +22,9 @@ public class DbSearchDTO extends PageDTO {
     @Schema(description = "数据库名称")
     private String dbName;
 
+    @Schema(description = "数据库主机")
+    private String host;
+
     @Schema(description = "数据库键名")
     private String dbKey;
 

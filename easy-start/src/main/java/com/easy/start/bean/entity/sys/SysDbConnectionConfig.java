@@ -44,5 +44,5 @@ public class SysDbConnectionConfig extends BaseEntity {
 
     @Schema(description = "是否启用")
     @TableField("enabled")
-    private Integer enabled;
+    private Boolean enabled;
 }
