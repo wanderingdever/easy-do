@@ -1,13 +1,11 @@
 package com.easy.redis.config;
 
 import com.easy.redis.codec.FastJson2Codec;
-import com.easy.redis.manager.PlusSpringCacheManager;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.spring.starter.***REMOVE_SECRET***;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,13 +46,4 @@ public class RedisConfig {
             log.error("init redisson config");
         };
     }
-
-    /**
-     * 自定义缓存管理器 整合spring-cache
-     */
-    @Bean
-    public CacheManager cacheManager() {
-        return new PlusSpringCacheManager();
-    }
-
 }
