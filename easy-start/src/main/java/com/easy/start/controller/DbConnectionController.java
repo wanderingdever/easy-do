@@ -1,12 +1,14 @@
 package com.easy.start.controller;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.easy.core.base.dto.IdDTO;
 import com.easy.core.base.dto.IdListDTO;
 import com.easy.start.bean.dto.sys.db.DbDTO;
 import com.easy.start.bean.dto.sys.db.DbSearchDTO;
 import com.easy.start.bean.entity.sys.SysDbConnectionConfig;
+import com.easy.start.bean.vo.sys.db.DbTestResultVO;
 import com.easy.start.service.sys.SysDbConnectionConfigService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -102,5 +104,42 @@ public class DbConnectionController {
     public String deleteBatch(@RequestBody IdListDTO dto) {
         dbConnectionConfigService.deleteBatch(dto.getIdList());
         return "批量删除成功";
+    }
+
+    /**
+     * 根据配置ID测试数据库连接
+     * </p>
+     * 根据已保存的配置ID测试数据库连接是否可用
+     *
+     * @param dto 配置ID
+     * @return 测试结果
+     */
+    @Operation(summary = "根据配置ID测试数据库连接")
+    @PostMapping("/test_connection/id")
+    public DbTestResultVO testConnectionById(@RequestBody IdDTO dto) {
+        // 根据ID获取数据库连接配置
+        SysDbConnectionConfig config = dbConnectionConfigService.getDbById(dto.getId());
+
+        // 转换为DTO进行测试
+        DbDTO dbDTO = new DbDTO();
+        BeanUtil.copyProperties(config, dbDTO);
+        
+        // 执行连接测试
+        return dbConnectionConfigService.testConnection(dbDTO);
+    }
+
+    /**
+     * 根据配置信息测试数据库连接
+     * </p>
+     * 测试未保存的新数据库连接配置是否可用
+     *
+     * @param dto 数据库连接配置信息
+     * @return 测试结果
+     */
+    @Operation(summary = "根据配置信息测试数据库连接")
+    @PostMapping("/test_connection")
+    public DbTestResultVO testConnection(@Valid @RequestBody DbDTO dto) {
+        // 直接测试连接
+        return dbConnectionConfigService.testConnection(dto);
     }
 }
