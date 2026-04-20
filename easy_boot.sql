@@ -11,7 +11,7 @@
  Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 09/04/2026 17:26:13
+ Date: 20/04/2026 14:52:15
 */
 
 SET NAMES utf8mb4;
@@ -10791,6 +10791,41 @@ VALUES (18, '开启登录验证码', 'captcha_enable', '0', 1, 1, '2025-10-28 14
 COMMIT;
 
 -- ----------------------------
+-- Table structure for sys_db_connection_config
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_db_connection_config`;
+CREATE TABLE `sys_db_connection_config`
+(
+    `id`            bigint unsigned NOT NULL AUTO_INCREMENT,
+    `secret_key`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `db_type`       varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
+    `host`          varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `port`          int                                                           NOT NULL,
+    `database_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `username`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `password`      varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `enabled`       tinyint                                                       NOT NULL DEFAULT '1',
+    `create_time`   datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_time`   datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `secret_key` (`secret_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of sys_db_connection_config
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_db_connection_config` (`id`, `secret_key`, `db_type`, `host`, `port`, `database_name`, `username`,
+                                        `password`, `enabled`, `create_time`, `update_time`)
+VALUES (1, 'demo-key-001', 'MYSQL', '192.168.1.111', 3124, 'sync_system', 'xc_dev', 'E7F@oFw2Ks', 1,
+        '2026-03-20 16:41:23', '2026-03-20 16:41:23');
+INSERT INTO `sys_db_connection_config` (`id`, `secret_key`, `db_type`, `host`, `port`, `database_name`, `username`,
+                                        `password`, `enabled`, `create_time`, `update_time`)
+VALUES (2, 'demo-key-002', 'MYSQL', '192.168.1.111', 3125, 'test', 'cdxc_prod', 'y#S2YoTv5pqMnLP9', 1,
+        '2026-03-20 16:41:23', '2026-04-17 15:01:42');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sys_dict_data
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_data`;
@@ -10863,7 +10898,7 @@ INSERT INTO `sys_dict_data` (`id`, `dict_type_id`, `dict_label`, `dict_value`, `
 VALUES (16, 4, '停用', 'STOP', 3, 'danger', NULL, 1, '2025-09-25 17:02:23.000', '2025-09-25 17:02:23.000');
 INSERT INTO `sys_dict_data` (`id`, `dict_type_id`, `dict_label`, `dict_value`, `dict_sort`, `css_class`, `list_class`,
                              `enable`, `create_time`, `update_time`)
-VALUES (17, 5, '管理端', 'ADMIN', 1, 'success', NULL, 1, '2025-09-25 17:03:58.000', '2025-09-25 17:03:58.000');
+VALUES (17, 5, '管理端', 'ADMIN', 1, 'primary', NULL, 1, '2025-09-25 17:03:58.000', '2026-04-10 10:12:23.000');
 INSERT INTO `sys_dict_data` (`id`, `dict_type_id`, `dict_label`, `dict_value`, `dict_sort`, `css_class`, `list_class`,
                              `enable`, `create_time`, `update_time`)
 VALUES (18, 5, 'WEB', 'WEB', 2, 'primary', NULL, 1, '2025-09-25 17:04:11.000', '2025-09-25 17:04:11.000');
@@ -10927,12 +10962,28 @@ CREATE TABLE `sys_login_logs`
     `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
     `update_time` datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_login_logs
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_login_logs` (`id`, `user_id`, `username`, `login_type`, `ip`, `ip_location`, `browser`, `login_time`,
+                              `create_time`, `update_time`)
+VALUES (1, 1, 'admin', 'PWD', '192.168.0.51', ',,内网IP', 'Mac', '2026-04-10 09:43:14.000', '2026-04-10 09:43:14.000',
+        '2026-04-10 09:43:14.000');
+INSERT INTO `sys_login_logs` (`id`, `user_id`, `username`, `login_type`, `ip`, `ip_location`, `browser`, `login_time`,
+                              `create_time`, `update_time`)
+VALUES (2, 1, 'admin', 'PWD', '192.168.0.51', ',,内网IP', 'Mac', '2026-04-10 13:43:48.000', '2026-04-10 13:43:48.000',
+        '2026-04-10 13:43:48.000');
+INSERT INTO `sys_login_logs` (`id`, `user_id`, `username`, `login_type`, `ip`, `ip_location`, `browser`, `login_time`,
+                              `create_time`, `update_time`)
+VALUES (3, 1, 'admin', 'PWD', '192.168.0.51', ',,内网IP', 'Mac', '2026-04-17 16:12:03.000', '2026-04-17 16:12:03.000',
+        '2026-04-17 16:12:03.000');
+INSERT INTO `sys_login_logs` (`id`, `user_id`, `username`, `login_type`, `ip`, `ip_location`, `browser`, `login_time`,
+                              `create_time`, `update_time`)
+VALUES (4, 1, 'admin', 'PWD', '192.168.0.51', ',,内网IP', 'Mac', '2026-04-20 10:31:16.000', '2026-04-20 10:31:16.000',
+        '2026-04-20 10:31:16.000');
 COMMIT;
 
 -- ----------------------------
@@ -10961,7 +11012,7 @@ CREATE TABLE `sys_menu`
     `create_time`   datetime(3) DEFAULT NULL COMMENT '创建时间',
     `update_time`   datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='菜单权限信息';
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='菜单权限信息';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -11147,6 +11198,152 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`
                         `enable`, `create_time`, `update_time`)
 VALUES (45, '删除', 'BUTTON', 4, 3, '', '', '', 0, 0, 0, 0, 0, NULL, 'sys.config.del', '', 1, '2025-10-28 11:14:36.000',
         '2025-10-28 11:14:36.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (49, '动态数据库', 'PAGE', 2, 10, 'system/db', 'system/db/db', '', 0, 0, 0, 0, 0, NULL, NULL, 'ele-Coin', 1,
+        '2026-04-17 16:13:54.000', '2026-04-17 16:15:25.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (50, '新增', 'BUTTON', 49, 1, '', '', '', 0, 0, 0, 0, 0, NULL, 'sys.db.add', '', 1, '2026-04-17 16:16:18.000',
+        '2026-04-17 16:16:18.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (51, '编辑', 'BUTTON', 49, 2, '', '', '', 0, 0, 0, 0, 0, NULL, 'sys.db.edit', '', 1, '2026-04-17 16:16:26.000',
+        '2026-04-17 16:16:26.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (52, '删除', 'BUTTON', 49, 3, '', '', '', 0, 0, 0, 0, 0, NULL, 'sys.db.del', '', 1, '2026-04-17 16:16:34.000',
+        '2026-04-17 16:16:34.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (53, '测试', 'BUTTON', 49, 4, '', '', '', 0, 0, 0, 0, 0, NULL, 'sys.db.test', '', 1, '2026-04-17 16:16:46.000',
+        '2026-04-17 16:16:46.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (62, '公告管理', 'PAGE', 0, 2, 'message/notice', 'message/notice/index', '', 0, 0, 0, 0, 0, NULL, NULL,
+        'ele-Cellphone', 1, '2026-04-20 11:13:09.000', '2026-04-20 11:13:27.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (63, '新增', 'BUTTON', 62, 1, '', '', '', 0, 0, 0, 0, 0, NULL, 'message.notice.add', '', 1,
+        '2026-04-20 11:43:41.000', '2026-04-20 11:43:41.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (64, '编辑', 'BUTTON', 62, 2, '', '', '', 0, 0, 0, 0, 0, NULL, 'message.notice.edit', '', 1,
+        '2026-04-20 11:43:47.000', '2026-04-20 11:43:47.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (65, '发布', 'BUTTON', 62, 3, '', '', '', 0, 0, 0, 0, 0, NULL, 'message.notice.publish', '', 1,
+        '2026-04-20 11:43:57.000', '2026-04-20 11:43:57.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (66, '删除', 'BUTTON', 1, 4, '', '', '', 0, 0, 0, 0, 0, NULL, 'message.notice.del', '', 1,
+        '2026-04-20 11:44:08.000', '2026-04-20 11:44:08.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (67, '撤回', 'BUTTON', 62, 5, '', '', '', 0, 0, 0, 0, 0, NULL, 'message.notice.revoke', '', 1,
+        '2026-04-20 11:44:33.000', '2026-04-20 11:44:33.000');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_type`, `parent_id`, `order_num`, `path`, `component`, `redirect`,
+                        `is_iframe`, `is_link`, `is_affix`, `is_keep_alive`, `is_hide`, `link`, `perms`, `icon`,
+                        `enable`, `create_time`, `update_time`)
+VALUES (68, '删除', 'BUTTON', 62, 6, '', '', '', 0, 0, 0, 0, 0, NULL, 'message.notice.del', '', 1,
+        '2026-04-20 11:45:01.000', '2026-04-20 11:45:01.000');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_message
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_message`;
+CREATE TABLE `sys_message`
+(
+    `id`                     bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `title`                  varchar(200) NOT NULL COMMENT '消息标题',
+    `content`                text         NOT NULL COMMENT '消息内容',
+    `sender_id`              bigint unsigned NOT NULL COMMENT '发送人ID',
+    `receiver_id`            bigint unsigned NOT NULL COMMENT '接收人ID',
+    `is_read`                tinyint      NOT NULL DEFAULT '0' COMMENT '是否已读：0-未读，1-已读',
+    `read_time`              datetime              DEFAULT NULL COMMENT '阅读时间',
+    `is_deleted_by_sender`   tinyint      NOT NULL DEFAULT '0' COMMENT '发送方是否删除：0-否，1-是',
+    `is_deleted_by_receiver` tinyint      NOT NULL DEFAULT '0' COMMENT '接收方是否删除：0-否，1-是',
+    `create_time`            datetime(3) DEFAULT NULL COMMENT '创建时间',
+    `update_time`            datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    KEY                      `idx_sender` (`sender_id`),
+    KEY                      `idx_receiver` (`receiver_id`),
+    KEY                      `idx_read` (`is_read`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='私信消息表';
+
+-- ----------------------------
+-- Records of sys_message
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_notice
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notice`;
+CREATE TABLE `sys_notice`
+(
+    `id`           bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `title`        varchar(200) NOT NULL COMMENT '公告标题',
+    `content`      text         NOT NULL COMMENT '公告内容',
+    `notice_type`  varchar(50)           DEFAULT 'ANNOUNCEMENT' COMMENT '公告类型',
+    `status`       varchar(20)  NOT NULL DEFAULT 'DRAFT' COMMENT '状态：DRAFT-草稿，PUBLISHED-已发布，REVOKED-已撤回',
+    `sender_id`    bigint unsigned NOT NULL COMMENT '发送人ID',
+    `publish_time` datetime              DEFAULT NULL COMMENT '发布时间',
+    `revoke_time`  datetime              DEFAULT NULL COMMENT '撤回时间',
+    `create_time`  datetime(3) DEFAULT NULL COMMENT '创建时间',
+    `update_time`  datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    KEY            `idx_status` (`status`),
+    KEY            `idx_sender` (`sender_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='公告通知表';
+
+-- ----------------------------
+-- Records of sys_notice
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_notice` (`id`, `title`, `content`, `notice_type`, `status`, `sender_id`, `publish_time`, `revoke_time`,
+                          `create_time`, `update_time`)
+VALUES (1, 'test', '***REMOVE_SECRET***', 'ANNOUNCEMENT', 'PUBLISHED', 1, '2026-04-20 14:51:41',
+        '2026-04-20 14:49:33', '2026-04-20 11:45:41.000', '2026-04-20 14:51:41.000');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_notice_read
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notice_read`;
+CREATE TABLE `sys_notice_read`
+(
+    `id`          bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `notice_id`   bigint unsigned NOT NULL COMMENT '公告ID',
+    `user_id`     bigint unsigned NOT NULL COMMENT '用户ID',
+    `read_time`   datetime NOT NULL COMMENT '阅读时间',
+    `is_deleted`  tinyint DEFAULT NULL,
+    `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_notice_user` (`notice_id`,`user_id`),
+    KEY           `idx_user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='公告阅读记录表';
+
+-- ----------------------------
+-- Records of sys_notice_read
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_notice_read` (`id`, `notice_id`, `user_id`, `read_time`, `is_deleted`, `create_time`, `update_time`)
+VALUES (6, 1, 1, '2026-04-20 14:48:27', 0, '2026-04-20 14:48:27.000', '2026-04-20 14:48:27.000');
 COMMIT;
 
 -- ----------------------------
@@ -11174,9 +11371,6 @@ BEGIN;
 INSERT INTO `sys_org` (`id`, `parent_id`, `org_name`, `org_short_name`, `org_code`, `org_sort`, `org_status`,
                        `create_time`, `update_time`)
 VALUES (1, 0, '测试', '测试', '00001', 2, '0', NULL, '2025-09-18 14:36:16.000');
-INSERT INTO `sys_org` (`id`, `parent_id`, `org_name`, `org_short_name`, `org_code`, `org_sort`, `org_status`,
-                       `create_time`, `update_time`)
-VALUES (3, 1, '测试子机构', '测试子机构', '0000101', 1, '0', '2025-09-18 14:32:35.000', '2025-09-18 14:35:13.000');
 INSERT INTO `sys_org` (`id`, `parent_id`, `org_name`, `org_short_name`, `org_code`, `org_sort`, `org_status`,
                        `create_time`, `update_time`)
 VALUES (4, 0, 'EasyBoot', 'ez', '01', 1, '0', '2025-09-18 14:35:41.000', '2025-09-18 14:35:41.000');
@@ -11250,7 +11444,7 @@ INSERT INTO `sys_role` (`id`, `role_name`, `role_key`, `authority_level`, `role_
 VALUES (1, '超级管理员', 'admin', 'LOWER', 1, 1, NULL, '2025-10-24 15:36:06.000');
 INSERT INTO `sys_role` (`id`, `role_name`, `role_key`, `authority_level`, `role_sort`, `enable`, `create_time`,
                         `update_time`)
-VALUES (2, '测试', 'test', 'ONESELF', 0, 1, '2025-10-29 10:13:01.000', '2025-11-07 16:25:47.000');
+VALUES (2, '测试', 'test', 'ONESELF', 0, 1, '2025-10-29 10:13:01.000', '2026-04-10 14:03:38.000');
 COMMIT;
 
 -- ----------------------------
@@ -11265,7 +11459,7 @@ CREATE TABLE `sys_role_menu`
     `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
     `update_time` datetime(3) DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='角色->菜单权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='角色->菜单权限关联表';
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -11305,6 +11499,8 @@ INSERT INTO `sys_role_menu` (`id`, `role_id`, `menu_id`, `create_time`, `update_
 VALUES (80, 1, 5, '2025-10-24 15:36:06.000', '2025-10-24 15:36:06.000');
 INSERT INTO `sys_role_menu` (`id`, `role_id`, `menu_id`, `create_time`, `update_time`)
 VALUES (81, 1, 4, '2025-10-24 15:36:06.000', '2025-10-24 15:36:06.000');
+INSERT INTO `sys_role_menu` (`id`, `role_id`, `menu_id`, `create_time`, `update_time`)
+VALUES (90, 2, 1, '2026-04-10 14:03:38.000', '2026-04-10 14:03:38.000');
 COMMIT;
 
 -- ----------------------------
@@ -11335,21 +11531,13 @@ CREATE TABLE `sys_user`
 BEGIN;
 INSERT INTO `sys_user` (`id`, `username`, `password`, `email`, `phone`, `phone_prefix`, `phone_suffix`, `client`,
                         `status`, `create_time`, `update_time`)
-VALUES (1, 'admin', '$2a$10$Z3u35JLLfT1H6fbxr6oypuelRWgA/dQ5IMDMjSzyQshDrEGGTwK/S', '',
+VALUES (1, 'admin', '$2a$10$***REMOVE_SECRET***', 'ismatt@qq.com',
         '***REMOVE_SECRET***', 181, 1234, 'ADMIN', 'NORMAL', '2025-07-31 16:59:39.000',
-        '2025-10-29 11:15:12.000');
+        '2026-04-10 13:46:19.000');
 INSERT INTO `sys_user` (`id`, `username`, `password`, `email`, `phone`, `phone_prefix`, `phone_suffix`, `client`,
                         `status`, `create_time`, `update_time`)
 VALUES (2, 'test', '$2a$10$5KdJQZy6lvs/LoEhNzcY9ey7RfRhVeRV9PEIVCE/TmIa4rnAKo.2i', NULL, NULL, NULL, NULL, 'WEB',
         'NORMAL', '2025-09-17 16:24:02.000', '2025-11-07 15:46:17.846');
-INSERT INTO `sys_user` (`id`, `username`, `password`, `email`, `phone`, `phone_prefix`, `phone_suffix`, `client`,
-                        `status`, `create_time`, `update_time`)
-VALUES (3, 'test2', '$2a$10$***REMOVE_SECRET***', NULL, NULL, NULL, NULL, 'WEB',
-        'INACTIVATED', '2025-11-25 16:02:51.000', '2025-11-25 16:02:51.000');
-INSERT INTO `sys_user` (`id`, `username`, `password`, `email`, `phone`, `phone_prefix`, `phone_suffix`, `client`,
-                        `status`, `create_time`, `update_time`)
-VALUES (4, 'test3', '$2a$10$***REMOVE_SECRET***', NULL, NULL, NULL, NULL, 'WEB',
-        'INACTIVATED', '2025-11-25 16:03:17.000', '2025-11-25 16:03:17.000');
 COMMIT;
 
 -- ----------------------------
@@ -11378,10 +11566,6 @@ VALUES (1, 1, '超级管理员',
         '1', '2025-07-31 16:59:39.000', '2025-09-18 14:52:58.000');
 INSERT INTO `sys_user_info` (`id`, `user_id`, `nickname`, `avatar`, `sex`, `create_time`, `update_time`)
 VALUES (2, 2, '测试', NULL, '0', '2025-09-17 16:24:02.000', '2025-10-29 10:17:07.000');
-INSERT INTO `sys_user_info` (`id`, `user_id`, `nickname`, `avatar`, `sex`, `create_time`, `update_time`)
-VALUES (3, 3, '测试2', NULL, '1', '2025-11-25 16:02:51.000', '2025-11-25 16:02:51.000');
-INSERT INTO `sys_user_info` (`id`, `user_id`, `nickname`, `avatar`, `sex`, `create_time`, `update_time`)
-VALUES (4, 4, '测试3', NULL, '1', '2025-11-25 16:03:17.000', '2025-11-25 16:03:17.000');
 COMMIT;
 
 -- ----------------------------
@@ -11406,10 +11590,6 @@ INSERT INTO `sys_user_org` (`id`, `user_id`, `org_id`, `create_time`, `update_ti
 VALUES (9, 1, 4, '2025-09-18 14:52:58.000', '2025-09-18 14:52:58.000');
 INSERT INTO `sys_user_org` (`id`, `user_id`, `org_id`, `create_time`, `update_time`)
 VALUES (12, 2, 1, '2025-10-29 10:17:07.000', '2025-10-29 10:17:07.000');
-INSERT INTO `sys_user_org` (`id`, `user_id`, `org_id`, `create_time`, `update_time`)
-VALUES (13, 3, 4, '2025-11-25 16:02:51.000', '2025-11-25 16:02:51.000');
-INSERT INTO `sys_user_org` (`id`, `user_id`, `org_id`, `create_time`, `update_time`)
-VALUES (14, 4, 4, '2025-11-25 16:03:17.000', '2025-11-25 16:03:17.000');
 COMMIT;
 
 -- ----------------------------
@@ -11434,10 +11614,6 @@ INSERT INTO `sys_user_role` (`id`, `user_id`, `role_id`, `create_time`, `update_
 VALUES (9, 1, 1, '2025-09-18 14:52:58.000', '2025-09-18 14:52:58.000');
 INSERT INTO `sys_user_role` (`id`, `user_id`, `role_id`, `create_time`, `update_time`)
 VALUES (12, 2, 2, '2025-10-29 10:17:07.000', '2025-10-29 10:17:07.000');
-INSERT INTO `sys_user_role` (`id`, `user_id`, `role_id`, `create_time`, `update_time`)
-VALUES (13, 3, 2, '2025-11-25 16:02:51.000', '2025-11-25 16:02:51.000');
-INSERT INTO `sys_user_role` (`id`, `user_id`, `role_id`, `create_time`, `update_time`)
-VALUES (14, 4, 2, '2025-11-25 16:03:17.000', '2025-11-25 16:03:17.000');
 COMMIT;
 
 -- ----------------------------
