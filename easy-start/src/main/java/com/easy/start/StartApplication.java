@@ -1,5 +1,6 @@
 package com.easy.start;
 
+import com.easy.tool.http.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -44,6 +45,6 @@ public class StartApplication {
                 PROFILE: %s
                 SERVER PORT: %s
                 """;
-        log.error("\n{}", String.format(logo, Arrays.toString(env.getActiveProfiles()), severPort));
+        log.error("\n{}", String.format(logo, Arrays.toString(env.getActiveProfiles()), IpUtils.getRealLocalIpAddress(), severPort));
     }
 }
