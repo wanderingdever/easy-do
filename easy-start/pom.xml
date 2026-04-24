@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.easy</groupId>
-        <artifactId>easy-boot</artifactId>
+        <artifactId>sichuan-automation</artifactId>
         <version>1.0</version>
     </parent>
 
@@ -53,11 +53,6 @@
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
             <version>3.2.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
     </dependencies>

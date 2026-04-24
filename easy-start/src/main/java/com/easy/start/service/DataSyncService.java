@@ -44,6 +44,9 @@ public class DataSyncService {
         validateRequestParam(data);
         SysDbConnectionConfig dbConfig = getAndValidateDbConfig(data.getSecretKey());
         DatabaseType databaseType = DatabaseType.from(dbConfig.getDbType());
+
+        log.info("同步数据到数据库: {}，表名: {}，数据量: {}，备注: {}", dbConfig.getDatabaseName(), data.getTableName(), data.getRecords().size(), data.getRemark());
+
         List<String> columns = resolveColumns(data.getRecords());
         String sql = buildInsertSql(data.getTableName(), columns, databaseType);
 
