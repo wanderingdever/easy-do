@@ -123,7 +123,7 @@ public class OssFileService {
         }
 
         if (expire == null || expire.isNegative() || expire.isZero()) {
-            expire = Duration.ofHours(1);
+            expire = Duration.ofMinutes(5);
         }
 
         try {

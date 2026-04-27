@@ -72,13 +72,13 @@ public class OssFileController {
      * 获取预览链接。
      * <p>
      * 示例：
-     * GET /api/oss/preview?objectKey=robot/inspection/a.jpg&expireMinutes=60
+     * GET /api/oss/preview?objectKey=robot/inspection/a.jpg&expireMinutes=5
      */
     @GetMapping("/preview")
     @Operation(summary = "获取预览链接", description = "获取指定文件的预览链接")
     public String preview(
             @RequestParam("objectKey") String objectKey,
-            @RequestParam(name = "expireMinutes", defaultValue = "60") long expireMinutes
+            @RequestParam(name = "expireMinutes", defaultValue = "5") long expireMinutes
     ) {
 
         return ossFileService.getPreviewUrl(
