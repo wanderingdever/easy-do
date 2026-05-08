@@ -52,7 +52,7 @@
                 <configuration>
                     <!-- 容器相关设置 -->
                     <container>
-                        <mainClass>com.easy.start.ApiApplication</mainClass>
+                        <mainClass>com.easy.apiClient.ClientApplication</mainClass>
                     </container>
                 </configuration>
             </plugin>
