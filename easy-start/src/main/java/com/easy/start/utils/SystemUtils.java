@@ -3,7 +3,7 @@ package com.easy.start.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import com.easy.core.exception.CustomizeException;
-import com.easy.redis.constant.RedisConstants;
+import com.easy.redis.constant.SystemConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.entity.sys.SysDictData;
 import com.easy.start.bean.entity.sys.SysDictType;
@@ -47,7 +47,7 @@ public class SystemUtils {
     }
 
     public static List<ConfigVO> getCacheConfigList() {
-        return RedisUtils.getCacheList(RedisConstants.SYSTEM_CONFIG);
+        return RedisUtils.getCacheList(SystemConstants.SYSTEM_CONFIG);
     }
 
 
@@ -87,7 +87,7 @@ public class SystemUtils {
      * @return List<SysDictType>
      */
     public static List<SysDictType> getCacheDictList() {
-        List<SysDictType> cacheObject = RedisUtils.getCacheList(RedisConstants.SYSTEM_DICT);
+        List<SysDictType> cacheObject = RedisUtils.getCacheList(SystemConstants.SYSTEM_DICT);
         if (CollUtil.isNotEmpty(cacheObject)) {
             return cacheObject;
         }

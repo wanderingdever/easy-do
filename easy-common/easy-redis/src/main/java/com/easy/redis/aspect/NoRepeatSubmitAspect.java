@@ -6,7 +6,7 @@ import com.easy.core.constant.Constants;
 import com.easy.core.enums.REnum;
 import com.easy.core.exception.CustomizeException;
 import com.easy.redis.annotation.RepeatSubmit;
-import com.easy.redis.constant.RedisConstants;
+import com.easy.redis.constant.SystemConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.tool.http.IpUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,7 +63,7 @@ public class NoRepeatSubmitAspect {
         String ip = IpUtils.getIpAddress(request);
         String url = request.getRequestURI();
         // 通过前缀 + url + token + 函数参数签名 来生成redis上的 key
-        String redisKey = RedisConstants.REPEAT_SUBMIT
+        String redisKey = SystemConstants.REPEAT_SUBMIT
                 .concat(url)
                 .concat(machineCode)
                 .concat(getMethodSign(method, joinPoint.getArgs()));

@@ -6,7 +6,7 @@ package com.easy.redis.constant;
  *
  * @author Matt
  */
-public interface RedisConstants {
+public interface SystemConstants {
 
     /**
      * 防重提交 redis key

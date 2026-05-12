@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.core.exception.CustomizeException;
 import com.easy.datasource.utils.PageUtils;
-import com.easy.redis.constant.RedisConstants;
+import com.easy.redis.constant.SystemConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.dto.sys.dict.DictSearchDTO;
 import com.easy.start.bean.entity.sys.SysDictData;
@@ -48,7 +48,7 @@ public class SysDictTypeService extends ServiceImpl<SysDictTypeMapper, SysDictTy
         List<SysDictType> dictTypeList = getTypeAndDataList(dto);
         if (CollUtil.isNotEmpty(dictTypeList)) {
             // 设置缓存
-            RedisUtils.setCacheNewList(RedisConstants.SYSTEM_DICT, dictTypeList);
+            RedisUtils.setCacheNewList(SystemConstants.SYSTEM_DICT, dictTypeList);
         }
     }
 
@@ -157,7 +157,7 @@ public class SysDictTypeService extends ServiceImpl<SysDictTypeMapper, SysDictTy
      * @return {@link List<SysDictType>}
      */
     public List<SysDictType> getCacheDictList() {
-        List<SysDictType> cacheList = RedisUtils.getCacheList(RedisConstants.SYSTEM_DICT);
+        List<SysDictType> cacheList = RedisUtils.getCacheList(SystemConstants.SYSTEM_DICT);
         if (CollUtil.isEmpty(cacheList)) {
             return cacheList;
         }

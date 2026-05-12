@@ -5,7 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.hutool.crypto.digest.BCrypt;
 import com.easy.core.exception.CustomizeException;
-import com.easy.redis.constant.RedisConstants;
+import com.easy.redis.constant.SystemConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.dto.LoginDTO;
 import com.easy.start.bean.entity.sys.SysLoginLogs;
@@ -101,7 +101,7 @@ public class LoginService {
      * @return {@link TokenInfo}
      */
     public TokenInfo loginWithCode(@Valid LoginDTO login) {
-        Object cacheObject = RedisUtils.getCacheObject(RedisConstants.LOGIN_CODE + login.getUsername());
+        Object cacheObject = RedisUtils.getCacheObject(SystemConstants.LOGIN_CODE + login.getUsername());
         if (cacheObject == null) {
             throw new CustomizeException("登录码不存在");
         }
@@ -125,13 +125,13 @@ public class LoginService {
      */
     public void validateCode(String verifyCodeUuid, String validateCode) {
         // 判断是否需要校验验证码
-        ConfigVO config = SystemUtils.getConfig(RedisConstants.SYSTEM_CONFIG_CAPTCHA_ENABLE);
+        ConfigVO config = SystemUtils.getConfig(SystemConstants.SYSTEM_CONFIG_CAPTCHA_ENABLE);
         // 不需要校验验证码
         if (config == null || "0".equals(config.getConfigValue())) {
             return;
         }
         // 从缓存中获取验证码
-        Object cacheObject = RedisUtils.getCacheObject(RedisConstants.CAPTCHA_CODE + verifyCodeUuid);
+        Object cacheObject = RedisUtils.getCacheObject(SystemConstants.CAPTCHA_CODE + verifyCodeUuid);
         // 校验验证码
         if (cacheObject == null || !validateCode.equalsIgnoreCase(cacheObject.toString())) {
             throw new CustomizeException("验证码不正确");

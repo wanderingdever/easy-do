@@ -9,7 +9,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentParser;
 import com.easy.core.exception.CustomizeException;
-import com.easy.redis.constant.RedisConstants;
+import com.easy.redis.constant.SystemConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.dto.LoginDTO;
 import com.easy.start.bean.vo.TokenInfo;
@@ -113,7 +113,7 @@ public class LoginController {
             byte[] imageInBytes = baos.toByteArray();
             // 输出
             IoUtil.write(response.getOutputStream(), true, imageInBytes);
-            RedisUtils.setCacheObject(RedisConstants.CAPTCHA_CODE + uuidStr, code, Duration.ofMinutes(1));
+            RedisUtils.setCacheObject(SystemConstants.CAPTCHA_CODE + uuidStr, code, Duration.ofMinutes(1));
         } catch (IOException e) {
             throw new CustomizeException(e.getMessage());
         }

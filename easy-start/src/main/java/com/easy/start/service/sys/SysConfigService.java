@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.easy.datasource.utils.PageUtils;
-import com.easy.redis.constant.RedisConstants;
+import com.easy.redis.constant.SystemConstants;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.start.bean.dto.sys.config.ConfigSearchDTO;
 import com.easy.start.bean.entity.sys.SysConfig;
@@ -38,7 +38,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
         dto.setIsSystem(true);
         List<ConfigVO> list = getSysConfigVOList(dto);
         if (CollUtil.isNotEmpty(list)) {
-            RedisUtils.setCacheNewList(RedisConstants.SYSTEM_CONFIG, list);
+            RedisUtils.setCacheNewList(SystemConstants.SYSTEM_CONFIG, list);
         }
     }
 
@@ -133,7 +133,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
      * @return 系统参数配置
      */
     public SysConfig getCacheSysConfigByConfigKey(String configKey) {
-        return RedisUtils.getCacheObject(RedisConstants.SYSTEM_CONFIG + configKey);
+        return RedisUtils.getCacheObject(SystemConstants.SYSTEM_CONFIG + configKey);
     }
 
 }
