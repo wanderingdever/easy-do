@@ -1,0 +1,65 @@
+:root {
+  --font-family: AliPuHui-Regular;
+  --color-white: #ffffff;
+  --bg-color: rgb(240, 241, 243, 0.6);
+  --bg-theme-color: #ffffff;
+  --border-color-light: #f1f2f3;
+  --color-primary-lighter: #ecf5ff;
+  --color-success-lighter: #f0f9eb;
+  --color-warning-lighter: #fdf6ec;
+  --color-danger-lighter: #fef0f0;
+  --color-dark-hover: #0000001a;
+  --color-menu-hover: rgba(0, 0, 0, 0.2);
+  --color-user-hover: rgba(0, 0, 0, 0.04);
+  --color-seting-main: #e9eef3;
+  --color-seting-aside: #d3dce6;
+  --color-seting-header: #b3c0d1;
+  // 默认圆角
+  --border-radius-base: 5px;
+  --page-height: calc(100vh - 65px);
+  --box-shadow-color: #e9eef3;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none !important;
+
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family), serif !important;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  font-size: 14px;
+}
+
+/* 宽高 100%
+------------------------------- */
+.w100 {
+  width: 100% !important;
+}
+
+.h100 {
+  height: 100% !important;
+}
+
+.vh100 {
+  height: 100vh !important;
+}
+
+.max100vh {
+  max-height: 100vh !important;
+}
+
+.min100vh {
+  min-height: 100vh !important;
+}
