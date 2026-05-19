@@ -44,6 +44,11 @@ function changeGlobalSize(command: string) {
   window.location.reload()
 }
 
+function changeShowLogo(value: boolean) {
+  themeConfig.value.showLogo = value
+  setDispatchThemeConfig()
+}
+
 // 一键恢复默认
 const onResetConfigClick = () => {
   Local.clear()
@@ -100,6 +105,14 @@ function setLocalThemeConfig() {
         <div style="margin-top: 10px">
           <el-button :color="getThemeConfig.primaryColor" @click="onColorPickerChange()">修改主题色</el-button>
         </div>
+      </el-col>
+    </el-row>
+    <el-row align="middle" style="margin-top: 15px">
+      <el-col :span="6">
+        <el-text>显示 Logo:</el-text>
+      </el-col>
+      <el-col :span="18">
+        <el-switch :model-value="themeConfig.showLogo" @change="changeShowLogo"/>
       </el-col>
     </el-row>
     <el-row>

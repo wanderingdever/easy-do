@@ -7,6 +7,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
         path: '/',
         name: '/',
         component: Layout,
+        redirect: '/home',
         meta: {
             isKeepAlive: true
         },

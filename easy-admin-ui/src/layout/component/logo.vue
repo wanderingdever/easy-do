@@ -20,14 +20,14 @@ const {themeConfig} = storeToRefs(themeConfigStore)
 .logo {
   height: 55px;
   padding: 10px 5px;
-  align-items: center;
+  align-content: center;
   justify-items: center;
   box-shadow: var(--box-shadow-color) 0 2px 2px 0;
 
   .logo-title {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 
     span {
       font-size: 16px;
