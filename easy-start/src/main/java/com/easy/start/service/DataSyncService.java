@@ -233,7 +233,8 @@ public class DataSyncService {
             columnJoiner.add(quoteIdentifier(column, databaseType));
             placeholderJoiner.add("?");
         }
-        return "INSERT INTO " + quotedTableName + " (" + columnJoiner + ") VALUES (" + placeholderJoiner + ")";
+        // 如果一个表没有唯一索引，REPLACE INTO 基本就等同于普通 INSERT INTO，会直接插入新数据。
+        return "REPLACE INTO " + quotedTableName + " (" + columnJoiner + ") VALUES (" + placeholderJoiner + ")";
     }
 
     private String quoteIdentifier(String identifier, DatabaseType databaseType) {
