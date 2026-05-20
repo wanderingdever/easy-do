@@ -580,7 +580,7 @@ async function initOrgInfo() {
 // 初始化角色列表
 async function initRoleList() {
   roleApi()
-      .page({current: 100})
+      .page({current: 1, size: 100})
       .then((res) => {
         state.roleData = res.data.records
       })
