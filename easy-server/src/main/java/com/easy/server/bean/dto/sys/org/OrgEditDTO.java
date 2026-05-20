@@ -1,0 +1,19 @@
+package com.easy.server.bean.dto.sys.org;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+/**
+ * </p>
+ *
+ * @author Matt
+ */
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Schema(description = "组织编辑-入参")
+public class OrgEditDTO extends OrgDTO {
+
+    @Schema(description = "组织id")
+    private String id;
+}

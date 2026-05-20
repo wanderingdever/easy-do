@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>api-client</artifactId>
+    <artifactId>easy-server</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,21 +20,64 @@
     <dependencies>
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-web</artifactId>
+            <artifactId>easy-redis</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-datasource</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-auth</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.easy</groupId>
             <artifactId>easy-api-client</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>alibabacloud-oss-v2</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+
     </dependencies>
 
-
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>easy-server</finalName>
         <!-- 此项配置用于 yaml 文件中以 @@ 的形式引用 pom.xml 内容 -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application*</include>
+                    <include>bootstrap*</include>
+                    <include>logback*</include>
+                </includes>
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -52,7 +95,7 @@
                 <configuration>
                     <!-- 容器相关设置 -->
                     <container>
-                        <mainClass>com.easy.apiClient.ClientApplication</mainClass>
+                        <mainClass>com.easy.server.ServerApplication</mainClass>
                     </container>
                 </configuration>
             </plugin>
