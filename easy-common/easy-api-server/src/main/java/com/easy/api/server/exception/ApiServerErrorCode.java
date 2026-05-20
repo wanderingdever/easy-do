@@ -2,6 +2,9 @@ package com.easy.api.server.exception;
 
 import lombok.Getter;
 
+/**
+ * 开放 API 服务端错误码。
+ */
 @Getter
 public enum ApiServerErrorCode {
 
@@ -16,6 +19,9 @@ public enum ApiServerErrorCode {
     RESPONSE_ENCRYPT_ERROR("响应参数加密失败"),
     RUNTIME_EXCEPTION("开放 API 服务异常");
 
+    /**
+     * 默认错误提示。
+     */
     private final String message;
 
     ApiServerErrorCode(String message) {

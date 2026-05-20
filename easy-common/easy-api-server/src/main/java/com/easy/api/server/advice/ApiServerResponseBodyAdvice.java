@@ -20,22 +20,37 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+/**
+ * 开放 API 响应加密处理器。
+ * <p>
+ * 仅处理标记了 {@code @ApiServer(responseEncrypt = true)} 的接口，
+ * 将原始业务返回值序列化为 JSON 后加密，并包装为 {@code R<String>} 返回。
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class ApiServerResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
+    /**
+     * 响应加密服务。
+     */
     private final ApiServerCryptoService cryptoService;
 
     public ApiServerResponseBodyAdvice(ApiServerCryptoService cryptoService) {
         this.cryptoService = cryptoService;
     }
 
+    /**
+     * 判断当前返回值是否需要加密。
+     */
     @Override
     public boolean supports(@NonNull MethodParameter returnType, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         ApiServer apiServer = getApiServerAnnotation(returnType);
         return apiServer != null && apiServer.responseEncrypt();
     }
 
+    /**
+     * 加密响应体，并统一输出 JSON 响应结构。
+     */
     @Override
     public Object beforeBodyWrite(Object body,
                                   @NonNull MethodParameter returnType,
@@ -56,6 +71,9 @@ public class ApiServerResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         return R.success(encryptedResponse);
     }
 
+    /**
+     * 兼容方法注解和类注解两种 {@code @ApiServer} 使用方式。
+     */
     private ApiServer getApiServerAnnotation(MethodParameter returnType) {
         ApiServer methodAnnotation = returnType.getMethodAnnotation(ApiServer.class);
         if (methodAnnotation != null) {

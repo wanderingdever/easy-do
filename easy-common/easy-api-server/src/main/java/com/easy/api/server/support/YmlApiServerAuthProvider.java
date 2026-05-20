@@ -9,8 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 基于 yml 配置的默认授权信息提供器。
+ */
 public class YmlApiServerAuthProvider implements ApiServerAuthProvider {
 
+    /**
+     * appId 到授权信息的内存索引。
+     */
     private final Map<String, ApiServerAuthInfo> authInfoMap;
 
     public YmlApiServerAuthProvider(ApiServerProperties properties) {
@@ -22,6 +28,9 @@ public class YmlApiServerAuthProvider implements ApiServerAuthProvider {
         return authInfoMap.get(appId);
     }
 
+    /**
+     * 将配置文件中的授权应用列表转换为运行期授权模型。
+     */
     private Map<String, ApiServerAuthInfo> loadAuthInfo(ApiServerProperties properties) {
         Map<String, ApiServerAuthInfo> map = new HashMap<>();
         List<ApiServerProperties.App> apps = properties.getAuth().getApps();
@@ -45,6 +54,9 @@ public class YmlApiServerAuthProvider implements ApiServerAuthProvider {
         return map;
     }
 
+    /**
+     * 将配置文件中的 API 授权项转换为运行期授权模型。
+     */
     private List<ApiServerApiInfo> toApiInfo(List<ApiServerProperties.Api> apis) {
         if (apis == null) {
             return List.of();

@@ -24,17 +24,37 @@ import org.springframework.core.annotation.AnnotationUtils;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+/**
+ * 开放 API 服务端核心切面。
+ * <p>
+ * 负责串联签名校验、授权校验、限流、请求参数解密、业务方法调用和访问日志回调。
+ */
 @Aspect
 public class ApiServerAspect {
 
+    /**
+     * 服务端配置。
+     */
     private final ApiServerProperties properties;
 
+    /**
+     * 请求校验服务。
+     */
     private final ApiServerRequestService requestService;
 
+    /**
+     * 请求解密服务。
+     */
     private final ApiServerCryptoService cryptoService;
 
+    /**
+     * API 限流器。
+     */
     private final ApiServerRateLimiter rateLimiter;
 
+    /**
+     * 访问日志扩展点。
+     */
     private final ApiServerAccessLogger accessLogger;
 
     public ApiServerAspect(ApiServerProperties properties,
@@ -53,6 +73,11 @@ public class ApiServerAspect {
     public void apiServerPointcut() {
     }
 
+    /**
+     * 处理开放 API 请求。
+     * <p>
+     * 该方法只处理 {@code @ApiServer} 标记的接口，且不绑定任何具体授权存储或日志存储。
+     */
     @Around("apiServerPointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
@@ -86,6 +111,9 @@ public class ApiServerAspect {
         }
     }
 
+    /**
+     * 如果第一个入参继承自 {@code ApiRequestParam}，则解密其中的 reqParam 并替换为真实业务对象。
+     */
     private Object decryptFirstApiRequestParam(Method method, Object[] args, ApiServerAuthInfo authInfo) {
         if (args == null || args.length == 0 || !(args[0] instanceof ApiRequestParam apiRequestParam)) {
             return null;
@@ -96,6 +124,9 @@ public class ApiServerAspect {
         return decryptedParam;
     }
 
+    /**
+     * 构造日志上下文，交给接入方实现的 {@code ApiServerAccessLogger} 使用。
+     */
     private ApiServerLogContext buildLogContext(HttpServletRequest request,
                                                 ApiHeaderParam headerParam,
                                                 ApiServerAuthInfo authInfo,
@@ -115,6 +146,9 @@ public class ApiServerAspect {
         return context;
     }
 
+    /**
+     * 获取调用方 IP，优先识别代理转发头。
+     */
     private String resolveIpAddress(HttpServletRequest request) {
         String forwardedFor = request.getHeader("X-Forwarded-For");
         if (forwardedFor != null && !forwardedFor.isBlank()) {
@@ -127,6 +161,9 @@ public class ApiServerAspect {
         return request.getRemoteAddr();
     }
 
+    /**
+     * 兼容方法注解和类注解两种 {@code @ApiServer} 使用方式。
+     */
     private ApiServer getApiServerAnnotation(Method method, Class<?> targetClass) {
         ApiServer methodAnnotation = AnnotationUtils.findAnnotation(method, ApiServer.class);
         if (methodAnnotation != null) {

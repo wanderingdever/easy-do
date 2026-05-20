@@ -13,8 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 单机内存版每日限流器。
+ * <p>
+ * 该实现适合本地开发和单实例部署；多实例生产环境应实现 {@code ApiServerRateLimiter} 替换为分布式限流。
+ */
 public class ***REMOVE_SECRET*** implements ApiServerRateLimiter {
 
+    /**
+     * key 格式：yyyy-MM-dd:appId:apiPath。
+     */
     private final ConcurrentMap<String, AtomicInteger> counters = new ConcurrentHashMap<>();
 
     @Override
@@ -30,6 +38,9 @@ public class ***REMOVE_SECRET*** implements ApiServerRateLimiter {
         clearExpiredCounters(LocalDate.now().toString());
     }
 
+    /**
+     * 清理非当天的计数，避免长期运行时内存持续增长。
+     */
     private void clearExpiredCounters(String today) {
         counters.keySet().removeIf(key -> !Objects.equals(today, key.substring(0, key.indexOf(':'))));
     }

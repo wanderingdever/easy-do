@@ -13,6 +13,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.util.List;
 
+/**
+ * 开放 API 请求校验服务。
+ * <p>
+ * 负责公共请求头校验、授权信息获取、签名验证和 API 权限匹配。
+ */
 public class ApiServerRequestService {
 
     private final ApiServerProperties properties;
@@ -24,6 +29,12 @@ public class ApiServerRequestService {
         this.authProvider = authProvider;
     }
 
+    /**
+     * 校验签名公共参数，并返回当前 appId 的授权信息。
+     *
+     * @param headerParam 解析后的签名请求头
+     * @return 授权信息
+     */
     public ApiServerAuthInfo verifyAndGetAuthInfo(ApiHeaderParam headerParam) {
         if (!verifyTimestamp(headerParam.getTimestamp(), properties.getTimestampWindow())) {
             throw new ApiServerException(ApiServerErrorCode.SIGN_EXPIRED);
@@ -44,6 +55,13 @@ public class ApiServerRequestService {
         return authInfo;
     }
 
+    /**
+     * 校验当前 appId 是否有权访问本次请求路径。
+     *
+     * @param authInfo 当前 appId 授权信息
+     * @param request  当前请求
+     * @return 命中的 API 授权项
+     */
     public ApiServerApiInfo verifyAndGetApiInfo(ApiServerAuthInfo authInfo, HttpServletRequest request) {
         String requestUri = request.getRequestURI();
         List<ApiServerApiInfo> apis = authInfo.getApis();
@@ -56,6 +74,9 @@ public class ApiServerRequestService {
                 .orElseThrow(() -> new ApiServerException(ApiServerErrorCode.API_NOT_AUTHORIZED));
     }
 
+    /**
+     * 校验请求时间戳是否在允许窗口内。
+     */
     private boolean verifyTimestamp(Long timestamp, Duration window) {
         long currentTimeMillis = System.currentTimeMillis();
         long windowMillis = window == null ? Duration.ofMinutes(5).toMillis() : window.toMillis();

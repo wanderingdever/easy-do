@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
-import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,18 +16,30 @@ import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * 开放 API JSON 响应过滤器。
+ * <p>
+ * 当请求包含签名头时，将 Accept 头统一改为 application/json，
+ * 防止客户端声明 XML 优先后触发 Spring 的 XML 响应转换器。
+ */
 public class ApiServerJsonAcceptFilter extends OncePerRequestFilter {
 
+    /**
+     * 开放 API 服务端配置。
+     */
     private final ApiServerProperties properties;
 
     public ApiServerJsonAcceptFilter(ApiServerProperties properties) {
         this.properties = properties;
     }
 
+    /**
+     * 仅处理带签名头的开放 API 请求。
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         if (request.getHeader(properties.getSignHeader()) == null) {
             filterChain.doFilter(request, response);
             return;
@@ -36,6 +47,9 @@ public class ApiServerJsonAcceptFilter extends OncePerRequestFilter {
         filterChain.doFilter(new JsonAcceptRequestWrapper(request), response);
     }
 
+    /**
+     * 包装请求头读取逻辑，将 Accept 统一暴露为 application/json。
+     */
     private static class JsonAcceptRequestWrapper extends HttpServletRequestWrapper {
 
         JsonAcceptRequestWrapper(HttpServletRequest request) {
@@ -70,6 +84,9 @@ public class ApiServerJsonAcceptFilter extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * 避免每次请求重复创建 application/json 列表。
+     */
     private static final class ListHolder {
 
         private static final java.util.List<String> APPLICATION_JSON = java.util.List.of(MediaType.APPLICATION_JSON_VALUE);
