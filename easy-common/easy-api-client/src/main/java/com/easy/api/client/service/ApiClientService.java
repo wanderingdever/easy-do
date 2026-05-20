@@ -40,7 +40,7 @@ public class ApiClientService {
 
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
-                R<String> result = JSON.parseObject(responseBody, new TypeReference<R<String>>() {
+                R<String> result = JSON.parseObject(responseBody, new TypeReference<>() {
                 });
                 String decryptedResponse;
                 if (result.getCode() != R.SUCCESS) {

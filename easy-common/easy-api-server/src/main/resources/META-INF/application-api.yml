@@ -1,0 +1,17 @@
+# demo
+easy:
+  api:
+    server:
+      auth:
+        apps:
+          - appId: umTaOMA2Nnp9WII4ebYsTts3
+            sm2-private-key: ***REMOVE_SECRET***
+            sm2-public-key: ***REMOVE_SECRET***
+            aes-iv: hm2j0dFYL6PBZA9K
+            aes-key: broQWbSlOhJwrKVj
+            enabled: true
+            apis:
+              - name: 测试
+                path: /api/test
+                limit-num: 5
+                enabled: true

@@ -30,6 +30,11 @@ import java.util.Map;
 @SaIgnore
 public class TestController {
 
+    @GetMapping("/one")
+    @Operation(summary = "测试")
+    public String test() {
+        return "test";
+    }
 
     @PostMapping("/api_test1")
     @Operation(summary = "获取请求公共参数")

@@ -4,7 +4,7 @@ package com.easy.web.advice;
 import com.alibaba.fastjson2.JSON;
 import com.easy.core.base.R;
 import com.easy.web.annotation.ResultWrap;
-import jakarta.validation.constraints.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -33,7 +33,7 @@ public class ResponseBodyWrapAdvice implements ResponseBodyAdvice<Object> {
      * {@code false}否则无任何操作
      */
     @Override
-    public boolean supports(@NotNull MethodParameter returnType, @NotNull Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(@NonNull MethodParameter returnType, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
         return needWrapper(returnType);
     }
 
@@ -51,9 +51,9 @@ public class ResponseBodyWrapAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Object beforeBodyWrite(Object body, @NotNull MethodParameter returnType, @NotNull MediaType selectedContentType,
-                                  @NotNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
-                                  @NotNull ServerHttpRequest request, @NotNull ServerHttpResponse response) {
+    public Object beforeBodyWrite(Object body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType,
+                                  @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+                                  @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         boolean bodyIsString = returnType.getParameterType() == String.class;
         R<Object> r;
         if (body instanceof R) {

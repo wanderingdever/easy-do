@@ -21,7 +21,12 @@
     <dependencies>
         <dependency>
             <groupId>com.easy</groupId>
-            <artifactId>easy-api-server</artifactId>
+            <artifactId>easy-api-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>easy-core</artifactId>
         </dependency>
 
         <dependency>

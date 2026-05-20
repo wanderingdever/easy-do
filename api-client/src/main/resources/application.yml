@@ -1,5 +1,5 @@
 server:
-  port: 9999
+  port: 7777
 
 spring:
   application:
@@ -12,7 +12,7 @@ spring:
 easy:
   api:
     client:
-      base-url: http://192.168.0.51:8888
+      base-url: http://192.168.0.51:9999
       appid: umTaOMA2Nnp9WII4ebYsTts3
       private-key: ***REMOVE_SECRET***
       public-key: ***REMOVE_SECRET***
