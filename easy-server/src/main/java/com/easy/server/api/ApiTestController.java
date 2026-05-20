@@ -2,9 +2,9 @@ package com.easy.server.api;
 
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import com.easy.client.annotation.ApiServer;
-import com.easy.client.constant.ApiConstants;
-import com.easy.client.entity.ApiHeaderParam;
+import com.easy.api.client.annotation.ApiServer;
+import com.easy.api.client.constant.ApiConstants;
+import com.easy.api.client.entity.ApiHeaderParam;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.server.bean.dto.sys.api.ApiDTO;
 import com.easy.server.bean.entity.sys.OpenApiList;

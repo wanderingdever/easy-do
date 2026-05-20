@@ -1,6 +1,6 @@
 package com.easy.server.bean.dto.sys.api;
 
-import com.easy.client.entity.ApiRequestParam;
+import com.easy.api.client.entity.ApiRequestParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

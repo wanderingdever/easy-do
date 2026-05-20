@@ -1,4 +1,4 @@
-package com.easy.client.annotation;
+package com.easy.api.client.annotation;
 
 import java.lang.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.easy.client.entity;
+package com.easy.api.client.entity;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;

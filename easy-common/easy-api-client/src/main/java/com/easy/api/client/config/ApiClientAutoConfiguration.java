@@ -1,6 +1,6 @@
-package com.easy.client.config;
+package com.easy.api.client.config;
 
-import com.easy.client.service.ApiClientService;
+import com.easy.api.client.service.ApiClientService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

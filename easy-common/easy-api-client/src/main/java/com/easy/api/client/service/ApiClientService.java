@@ -1,11 +1,11 @@
-package com.easy.client.service;
+package com.easy.api.client.service;
 
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
-import com.easy.client.config.ApiClientProperties;
-import com.easy.client.constant.ApiConstants;
-import com.easy.client.utils.ApiSignUtils;
+import com.easy.api.client.config.ApiClientProperties;
+import com.easy.api.client.constant.ApiConstants;
+import com.easy.api.client.utils.ApiSignUtils;
 import com.easy.core.base.R;
 import com.easy.tool.http.OkHttpUtils;
 import lombok.AllArgsConstructor;

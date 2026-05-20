@@ -1,4 +1,4 @@
-package com.easy.client.constant;
+package com.easy.api.client.constant;
 
 /**
  * </p>

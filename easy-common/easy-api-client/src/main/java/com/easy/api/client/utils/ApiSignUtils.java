@@ -1,4 +1,4 @@
-package com.easy.client.utils;
+package com.easy.api.client.utils;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.Mode;

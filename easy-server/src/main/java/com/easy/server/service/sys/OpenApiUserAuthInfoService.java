@@ -2,9 +2,9 @@ package com.easy.server.service.sys;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.easy.client.constant.ApiConstants;
-import com.easy.client.utils.ApiSignUtils;
-import com.easy.client.utils.SM2KeyPair;
+import com.easy.api.client.constant.ApiConstants;
+import com.easy.api.client.utils.ApiSignUtils;
+import com.easy.api.client.utils.SM2KeyPair;
 import com.easy.core.exception.CustomizeException;
 import com.easy.redis.utils.RedisUtils;
 import com.easy.server.bean.entity.sys.OpenApiAuth;

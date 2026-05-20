@@ -3,10 +3,10 @@ package com.easy.server.aspect;
 import cn.hutool.core.collection.ListUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.easy.client.constant.ApiConstants;
-import com.easy.client.entity.ApiHeaderParam;
-import com.easy.client.entity.ApiRequestParam;
-import com.easy.client.utils.ApiSignUtils;
+import com.easy.api.client.constant.ApiConstants;
+import com.easy.api.client.entity.ApiHeaderParam;
+import com.easy.api.client.entity.ApiRequestParam;
+import com.easy.api.client.utils.ApiSignUtils;
 import com.easy.core.enums.REnum;
 import com.easy.core.exception.CustomizeException;
 import com.easy.redis.utils.RedisUtils;
@@ -49,7 +49,7 @@ public class ApiServerAspect {
     /**
      * 定义切点
      */
-    @Pointcut("@within(com.easy.client.annotation.ApiServer) || @annotation(com.easy.client.annotation.ApiServer)")
+    @Pointcut("@within(com.easy.api.client.annotation.ApiServer) || @annotation(com.easy.api.client.annotation.ApiServer)")
     public void preventDuplication() {
     }
 

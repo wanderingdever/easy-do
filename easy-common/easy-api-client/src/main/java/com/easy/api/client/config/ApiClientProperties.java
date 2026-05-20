@@ -1,4 +1,4 @@
-package com.easy.client.config;
+package com.easy.api.client.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

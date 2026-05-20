@@ -1,8 +1,8 @@
 package com.easy.server.advice;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.easy.client.annotation.ApiServer;
-import com.easy.client.constant.ApiConstants;
+import com.easy.api.client.annotation.ApiServer;
+import com.easy.api.client.constant.ApiConstants;
 import com.easy.server.utils.ApiServerUtils;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.core.MethodParameter;

@@ -3,7 +3,7 @@ package com.easy.server.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.alibaba.fastjson2.JSON;
-import com.easy.client.utils.ApiSignUtils;
+import com.easy.api.client.utils.ApiSignUtils;
 import com.easy.core.base.R;
 import com.easy.tool.http.OkHttpUtils;
 import com.easy.web.annotation.ResultWrap;
