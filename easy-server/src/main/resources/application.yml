@@ -10,5 +10,6 @@ spring:
       - optional:application-redis.yml
       - optional:application-datasource.yml
       - optional:application-auth.yml
+      - optional:application-mail.yml
   profiles:
     active: dev

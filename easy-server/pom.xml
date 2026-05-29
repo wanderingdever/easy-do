@@ -25,6 +25,11 @@
 
         <dependency>
             <groupId>com.easy</groupId>
+            <artifactId>easy-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.easy</groupId>
             <artifactId>easy-datasource</artifactId>
         </dependency>
 
