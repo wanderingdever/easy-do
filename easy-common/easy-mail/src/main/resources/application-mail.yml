@@ -1,0 +1,13 @@
+spring:
+  # 邮件服务配置
+  mail:
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+          auth: true
+          starttls:
+            enable: true
+            required: true
