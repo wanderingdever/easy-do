@@ -3,7 +3,7 @@ package com.easy.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.***REMOVE_SECRET***;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
         config.addAllowedHeader("*");
         // 允许所有请求方法跨域调用
         config.addAllowedMethod("*");
-        ***REMOVE_SECRET*** source = new ***REMOVE_SECRET***();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

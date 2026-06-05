@@ -24,7 +24,7 @@ import org.redisson.spring.cache.RedissonCache;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.transaction.***REMOVE_SECRET***;
+import org.springframework.cache.transaction.TransactionAwareCacheDecorator;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -123,7 +123,7 @@ public class PlusSpringCacheManager implements CacheManager {
 
         Cache cache = new RedissonCache(map, allowNullValues);
         if (transactionAware) {
-            cache = new ***REMOVE_SECRET***(cache);
+            cache = new TransactionAwareCacheDecorator(cache);
         }
         Cache oldCache = instanceMap.putIfAbsent(name, cache);
         if (oldCache != null) {
@@ -137,7 +137,7 @@ public class PlusSpringCacheManager implements CacheManager {
 
         Cache cache = new RedissonCache(map, config, allowNullValues);
         if (transactionAware) {
-            cache = new ***REMOVE_SECRET***(cache);
+            cache = new TransactionAwareCacheDecorator(cache);
         }
         Cache oldCache = instanceMap.putIfAbsent(name, cache);
         if (oldCache != null) {

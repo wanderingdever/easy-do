@@ -25,7 +25,7 @@ public class ApiServerBridgeConfig {
      * API 服务器认证提供器
      */
     @Bean
-    public ApiServerAuthProvider ***REMOVE_SECRET***() {
+    public ApiServerAuthProvider easyServerApiServerAuthProvider() {
         return appId -> {
             OpenApiUserAuthInfo authInfo = RedisUtils.getCacheObject(ApiConstants.USER_API_AUTH_INFO_REDIS_KEY + appId);
             if (authInfo == null) {
@@ -51,7 +51,7 @@ public class ApiServerBridgeConfig {
      * API 服务器访问日志记录器
      */
     @Bean
-    public ApiServerAccessLogger ***REMOVE_SECRET***(OpenApiRequestLogsService requestLogsService) {
+    public ApiServerAccessLogger easyServerApiServerAccessLogger(OpenApiRequestLogsService requestLogsService) {
         return new ApiServerAccessLogger() {
             @Override
             public void onRequest(ApiServerLogContext context) {

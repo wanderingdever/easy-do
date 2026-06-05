@@ -65,7 +65,7 @@ public class RedissonProperties {
         /**
          * 发布和订阅连接池大小
          */
-        private int ***REMOVE_SECRET***;
+        private int subscriptionConnectionPoolSize;
 
     }
 }

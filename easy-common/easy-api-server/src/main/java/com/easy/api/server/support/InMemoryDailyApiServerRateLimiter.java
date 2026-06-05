@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>
  * 该实现适合本地开发和单实例部署；多实例生产环境应实现 {@code ApiServerRateLimiter} 替换为分布式限流。
  */
-public class ***REMOVE_SECRET*** implements ApiServerRateLimiter {
+public class InMemoryDailyApiServerRateLimiter implements ApiServerRateLimiter {
 
     /**
      * key 格式：yyyy-MM-dd:appId:apiPath。

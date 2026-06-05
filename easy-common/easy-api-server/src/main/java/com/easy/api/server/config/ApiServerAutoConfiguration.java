@@ -7,7 +7,7 @@ import com.easy.api.server.service.ApiServerRequestService;
 import com.easy.api.server.spi.ApiServerAccessLogger;
 import com.easy.api.server.spi.ApiServerAuthProvider;
 import com.easy.api.server.spi.ApiServerRateLimiter;
-import com.easy.api.server.support.***REMOVE_SECRET***;
+import com.easy.api.server.support.InMemoryDailyApiServerRateLimiter;
 import com.easy.api.server.support.NoopApiServerAccessLogger;
 import com.easy.api.server.support.YmlApiServerAuthProvider;
 import com.easy.api.server.web.ApiServerJsonAcceptFilter;
@@ -54,7 +54,7 @@ public class ApiServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ApiServerRateLimiter apiServerRateLimiter() {
-        return new ***REMOVE_SECRET***();
+        return new InMemoryDailyApiServerRateLimiter();
     }
 
     /**
@@ -101,8 +101,8 @@ public class ApiServerAutoConfiguration {
      * 对开放 API 请求强制使用 JSON 响应，避免客户端 Accept 头触发 XML converter。
      */
     @Bean
-    @ConditionalOnMissingBean(name = "***REMOVE_SECRET***")
-    public FilterRegistrationBean<ApiServerJsonAcceptFilter> ***REMOVE_SECRET***(ApiServerProperties properties) {
+    @ConditionalOnMissingBean(name = "apiServerJsonAcceptFilterRegistration")
+    public FilterRegistrationBean<ApiServerJsonAcceptFilter> apiServerJsonAcceptFilterRegistration(ApiServerProperties properties) {
         FilterRegistrationBean<ApiServerJsonAcceptFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new ApiServerJsonAcceptFilter(properties));
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);

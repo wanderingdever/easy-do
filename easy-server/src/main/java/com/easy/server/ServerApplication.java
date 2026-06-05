@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
-import org.springframework.context.***REMOVE_SECRET***;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -26,7 +26,7 @@ public class ServerApplication {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         SpringApplication app = new SpringApplication(ServerApplication.class);
         app.setApplicationStartup(new BufferingApplicationStartup(2048));
-        ***REMOVE_SECRET*** run = app.run(args);
+        ConfigurableApplicationContext run = app.run(args);
         String logo = """
                 ███████╗████████╗ █████╗ ██████╗ ████████╗
                 ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝

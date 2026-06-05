@@ -3,7 +3,7 @@ package com.easy.redis.config;
 import com.easy.redis.codec.FastJson2Codec;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.spring.starter.***REMOVE_SECRET***;
+import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
@@ -27,7 +27,7 @@ public class RedisConfig {
 
 
     @Bean
-    public ***REMOVE_SECRET*** redissonCustomizer() {
+    public RedissonAutoConfigurationCustomizer redissonCustomizer() {
         return config -> {
             config.setThreads(redissonProperties.getThreads())
                     .setNettyThreads(redissonProperties.getNettyThreads())
@@ -39,7 +39,7 @@ public class RedisConfig {
                         .setTimeout(singleServerConfig.getTimeout())
                         .setClientName(singleServerConfig.getClientName())
                         .setIdleConnectionTimeout(singleServerConfig.getIdleConnectionTimeout())
-                        .***REMOVE_SECRET***(singleServerConfig.***REMOVE_SECRET***())
+                        .setSubscriptionConnectionPoolSize(singleServerConfig.getSubscriptionConnectionPoolSize())
                         .setConnectionMinimumIdleSize(singleServerConfig.getConnectionMinimumIdleSize())
                         .setConnectionPoolSize(singleServerConfig.getConnectionPoolSize());
             }

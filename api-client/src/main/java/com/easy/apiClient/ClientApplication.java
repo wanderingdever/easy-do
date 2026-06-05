@@ -5,7 +5,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
-import org.springframework.context.***REMOVE_SECRET***;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -30,7 +30,7 @@ public class ClientApplication {
         SpringApplication app = new SpringApplication(ClientApplication.class);
         app.setApplicationStartup(new BufferingApplicationStartup(2048));
         app.setBannerMode(Banner.Mode.OFF);
-        ***REMOVE_SECRET*** run = app.run(args);
+        ConfigurableApplicationContext run = app.run(args);
 
         Environment env = run.getEnvironment();
         String severPort = env.getProperty("server.port");

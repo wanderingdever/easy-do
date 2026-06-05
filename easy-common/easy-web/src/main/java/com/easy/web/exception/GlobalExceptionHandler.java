@@ -7,7 +7,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.***REMOVE_SECRET***;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -47,8 +47,8 @@ public class GlobalExceptionHandler {
     /**
      * 参数校验异常拦截
      */
-    @ExceptionHandler(***REMOVE_SECRET***.class)
-    public R<String> ***REMOVE_SECRET***(***REMOVE_SECRET*** e) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public R<String> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
 
         // 从异常对象中拿到 ObjectError 对象
         ObjectError objectError = e.getBindingResult().getAllErrors().get(0);

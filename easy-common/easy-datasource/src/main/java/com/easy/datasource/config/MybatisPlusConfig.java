@@ -1,7 +1,7 @@
 package com.easy.datasource.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.***REMOVE_SECRET***;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class MybatisPlusConfig {
         // 分页插件
         interceptor.addInnerInterceptor(paginationInnerInterceptor());
         // 乐观锁插件
-        interceptor.addInnerInterceptor(***REMOVE_SECRET***());
+        interceptor.addInnerInterceptor(optimisticLockerInnerInterceptor());
         return interceptor;
     }
 
@@ -44,8 +44,8 @@ public class MybatisPlusConfig {
     /**
      * 乐观锁插件
      */
-    public ***REMOVE_SECRET*** ***REMOVE_SECRET***() {
-        return new ***REMOVE_SECRET***();
+    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
+        return new OptimisticLockerInnerInterceptor();
     }
 
 }
