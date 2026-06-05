@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    dynamic:
+      primary: master
+      datasource:
+        master:
+          url: jdbc:mysql://192.168.1.111:3124/easy_boot?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+          username: xc_dev
+          password: E7F@oFw2Ks
+  data:
+    redis:
+      host: 192.168.1.111
+      password: X4!A@iq#HM
+      port: 26379
+      database: 0
+
+  # 邮件服务配置
+  mail:
+    host: smtp.feishu.cn
+    port: 587
+    username: example@feishu.cn
+    password: ererrer
+logging:
+  level:
+    root: INFO
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+aliyun:
+  oss:
+    endpoint: https://oss-cn.aliyuncs.com
+    region: cn
+    bucket-name: test
+    access-key-id: 123
+    access-key-secret: 123
+    # 可选：如果你绑定了自定义域名，例如 https://static.example.com
+    # 做在线预览时建议用自定义域名，否则部分浏览器会把 OSS 默认域名当成下载链接。
+    public-domain: https://test.oss-cn.aliyuncs.com/
+    # 如果 endpoint 本身就是自定义域名，设置为 true。
+    use-cname: false

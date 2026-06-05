@@ -6,7 +6,7 @@ server:
       enabled: true
 spring:
   main:
-    banner-mode: off
+    banner-mode: console
     log-startup-info: false
   servlet:
     multipart:
